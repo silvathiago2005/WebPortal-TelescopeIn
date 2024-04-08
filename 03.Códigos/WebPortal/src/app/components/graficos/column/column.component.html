@@ -1,0 +1,13 @@
+<div class="table-loading text-center" *ngIf="!liberarGrafico">
+  <i class="fa fa-spinner fa-spin fa-5x fa-fw text-autodocs"></i>
+</div>
+
+<div *ngIf="noData" class="text-center tamanho"><span>Não há dados para serem apresentados no momento</span></div>
+
+<highcharts-chart *ngIf="liberarGrafico" 
+  [Highcharts]="Highcharts" 
+  [options]="chartOptions" 
+  [(update)]="updateFlag"
+  [oneToOne]="true" 
+  style="width: 100%; height: 100%; display: block;">
+</highcharts-chart>

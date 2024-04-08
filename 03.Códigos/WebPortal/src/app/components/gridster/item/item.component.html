@@ -1,0 +1,19 @@
+<div class="panel-heading">
+    <h5 class="panel-title" style="float: left" translate>{{ widget.title }}</h5>
+    <div *ngIf="tipoGrafico == 1 || tipoGrafico == 2 || tipoGrafico == 4">
+        <div *ngIf="tipoGrafico != 1">
+            <a class="panel-title pointer" style="float: right" (click)="setTipoGrafico(1)"><i class="fa fa-line-chart"></i></a>
+        </div>
+        <div *ngIf="tipoGrafico != 2">
+            <a class="panel-title pointer rotate" style="float: right" (click)="setTipoGrafico(2)"><i class="fa fa-bar-chart"></i></a>
+        </div>
+        <div *ngIf="tipoGrafico != 4">
+            <a class="panel-title pointer" style="float: right" (click)="setTipoGrafico(4)"><i class="fa fa-bar-chart"></i></a>
+        </div>
+    </div>
+
+</div>
+<div class="panel-body">
+    <app-graficos [tipoGrafico]="tipoGrafico" [widget]="widget" [idQuestionario]="idQuestionario" [IDTipoGrafico]="IDTipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"
+        style="width: 100%; height: 100%"></app-graficos>
+</div>

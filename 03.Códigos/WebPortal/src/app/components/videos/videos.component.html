@@ -1,0 +1,41 @@
+<div id="accordion" *ngIf="videos.length > 0">
+    <div id="headingOne" class="btn-group" *ngFor="let video of videos; let i = index" role="group">
+        <button class="btn mb-2 mr-2" type="button" data-toggle="collapse" [attr.data-target]="'#Video'+ idPergunta +i" aria-expanded="false" [attr.aria-controls]="'#Video'+ idPergunta +i">
+          <i class="fa fa-film"></i> Vídeo {{i + 1}}
+        </button>
+    </div>
+
+    <div id="{{'Video'+ idPergunta + i}}" class="collapse multi-collapse" aria-labelledby="headingOne" data-parent="#accordion" *ngFor="let video of videos; let i = index">
+      <div class="card-body" style="text-align: center;">
+        <vg-player>
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <!-- Caso queira incluir mais coisas no controle do video -->
+          <!-- <vg-scrub-bar>
+              <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+              <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+
+          <vg-controls>
+              <vg-play-pause></vg-play-pause>
+              <vg-playback-button></vg-playback-button>
+      
+              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+      
+              <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+      
+              <vg-mute></vg-mute>
+              <vg-volume></vg-volume>
+      
+              <vg-fullscreen></vg-fullscreen>
+          </vg-controls> -->
+
+          <video [vgMedia]="media" #media id="masterVideo" preload="auto" controls>
+            <source src="{{video.VideoUrl}}" type="video/mp4">
+          </video>
+        </vg-player>
+        <h5><strong translate>{{video.Observacao}}</strong></h5>
+      </div>
+    </div>
+</div>
+

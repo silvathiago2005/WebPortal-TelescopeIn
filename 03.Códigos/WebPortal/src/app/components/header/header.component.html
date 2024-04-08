@@ -1,0 +1,71 @@
+<!-- Top Bar Start -->
+<div class="topbar">
+  <!-- LOGO -->
+  <div class="topbar-left">
+    <div class="text-center" style="width: 220px;">
+      <!-- Image Logo here -->
+      <a routerLink='/' class="logo">
+        <span>
+          <img src="../../assets/Logo/logo_TelescopeInBrancoPq2.png" />
+        </span>
+      </a>
+      <i class="icon-c-logo">
+        <button class="button-menu-mobile open-left waves-light waves-effect buttonCallapseSidebar" data-toggle="collapse"
+          data-target="#collapseSidebar"><i class="dripicons-menu"></i> </button>
+      </i>
+    </div>
+  </div>
+  <!-- Button mobile view to collapse sidebar menu -->
+  <nav class="navbar-custom">
+    <ul class="list-inline float-left mb-0">
+      <div class="form-group  mt-4">
+        <div>
+          <a class="google_translate" target="_blank" rel="nofollow" title="English" (click)="mudarIngles()"><img alt="English"
+              vertical-align="absbottom" title="English" height="26" src="../../assets/Logo/English_thumb.png?imgmax=800"
+              style="cursor: pointer;margin-right:13px" width="24" /></a>
+          <a class="google_translate" target="_blank" rel="nofollow" title="España" (click)="mudarEspanhol()"><img alt="Spain"
+              vertical-align="absbottom" title="España" height="26" src="../../assets/Logo/Spain_thumb.png?imgmax=800"
+              style="cursor: pointer;margin-right:13px" width="24" /></a>
+          <a class="google_translate" target="_blank" rel="nofollow" title="Português" (click)="mudarPortugues()"><img
+              alt="Portuguese" vertical-align="absbottom" title="Português" height="26" src="../../assets/Logo/Portuguese_thumb.png?imgmax=800"
+              style="cursor: pointer;margin-right:13px" width="24" /></a>
+        </div>
+      </div>
+    </ul>
+
+    <ul class="list-inline float-right mb-0">
+        <!-- <li class="form-group">
+            <a class="pointer waves-effect" (click)="fullscream()"><i class="ti-fullscreen" style="color: white;"></i></a>
+        </li> -->
+      <li class="list-inline-item dropdown notification-list">
+        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+          aria-haspopup="false" aria-expanded="false">
+          <img src="../../assets/Logo/telescope in logo- fundo transparente 32x32.png" alt="user" class="rounded-circle">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+          <!-- item-->
+          <div *ngIf="isLoggedin()" class="dropdown-item noti-title">
+            <h5 class="text-overflow">
+              {{user$.nome | slice:0:15}}
+            </h5>
+          </div>
+          <!-- item-->
+          <a *ngIf="isLoggedin()" href="javascript:void(0);" class="dropdown-item notify-item" (click)="ModificarSenha()">
+            <!-- <i class="zmdi zmdi-power"></i> -->
+            <a role="button"><i class="fa fa-key"></i>&nbsp;<span translate>Senha</span></a>
+          </a>
+          <!-- item -->
+          <a *ngIf="isLoggedin()" href="javascript:void(0);" class="dropdown-item notify-item" (click)="logoff()">
+            <!-- <i class="zmdi zmdi-power"></i> -->
+            <a role="button"><i class="fa fa-sign-out"></i>&nbsp;<span translate>Sair</span></a>
+          </a>
+          <!-- item-->
+          <a *ngIf="!isLoggedin()" href="javascript:void(0);" class="dropdown-item notify-item" (click)="Login()">
+            <!-- <i class="zmdi zmdi-power"></i> -->
+            <a role="button"><i class="fa fa-sign-in text-right"></i>&nbsp;<span translate>Entrar</span></a>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</div><!-- Top Bar End -->

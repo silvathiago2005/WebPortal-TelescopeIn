@@ -1,0 +1,7 @@
+<div class="col-12">
+    <h5>{{perguntas.numeroDescricao}}</h5>
+        <span class="tamanhoFonteRespostasColetas" [innerHTML]="resposta"></span>
+  </div>
+  <div *ngIf="mostrar">
+    <app-multimidia style="left: 5px;" [idColeta]="idColeta" [idPergunta]="perguntas.id" [multimidia]="multimidia"></app-multimidia>
+  </div> 

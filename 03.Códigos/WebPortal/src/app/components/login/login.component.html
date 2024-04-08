@@ -1,0 +1,31 @@
+    <div class="loginPosition">
+      <div class="card justify-content-center">
+        <div class="card-body col-12 justify-content-center">
+            <img class="logoLogin" alt="Logo TelescopeIn" src="../../assets/Logo/Logo_Transparente.png">
+          <form novalidate role="form" [formGroup]="form">
+            <div class="form-group">
+              <label for="email" translate>Email/Login</label>
+              <input type="email" class="form-control form-control-md" formControlName="email">
+              <div *ngIf="submited && !form.controls.email.valid" class="text-danger">
+                <span *ngIf="form.controls.email.errors.required" translate>Email é necessário</span>
+                <span *ngIf="form.controls.email.value && form.controls.email.errors.email" translate>Endereço de Email inválido</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" translate>Senha</label>
+              <input type="password" class="form-control form-control-md" formControlName="password">
+              <div *ngIf="submited && !form.controls.password.valid" class="text-danger">
+                <span *ngIf="form.controls.password.errors.required" translate>Senha é necessário</span>
+              </div>
+            </div>
+            
+            <div class="form-group text-center mt-5">
+              <button type="button" class="btn btn-md botaoComum" (click)="Logar()"><span translate>Entrar</span>&nbsp;&nbsp;<i class="fa fa-sign-in text-right"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>

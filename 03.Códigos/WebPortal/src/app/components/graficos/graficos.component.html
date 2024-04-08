@@ -1,0 +1,9 @@
+<app-line *ngIf="tipoGrafico == 1 && idQuestionario" [widget]="widget" [tipoGrafico]="tipoGrafico" [idQuestionario]="idQuestionario" [IDTipoGrafico]="IDTipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-line>
+
+<app-bars *ngIf="tipoGrafico == 2 && idQuestionario" [widget]="widget" [tipoGrafico]="tipoGrafico" [idQuestionario]="idQuestionario" [IDTipoGrafico]="IDTipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-bars>
+
+<app-basic-area *ngIf="tipoGrafico == 3"></app-basic-area>
+
+<app-column *ngIf="tipoGrafico == 4 && idQuestionario" [widget]="widget" [tipoGrafico]="tipoGrafico" [idQuestionario]="idQuestionario" [IDTipoGrafico]="IDTipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-column>
+
+<app-pie *ngIf="tipoGrafico == 5 && idQuestionario" [widget]="widget" [tipoGrafico]="tipoGrafico" [idQuestionario]="idQuestionario" [IDTipoGrafico]="IDTipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-pie>

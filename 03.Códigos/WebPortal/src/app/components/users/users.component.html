@@ -1,0 +1,323 @@
+<!-- Start content -->
+<div class="content">
+  <div class="container">
+    <h4><span translate>Usuários</span>&nbsp;&nbsp;<i class="fa fa-user"></i><i class="fa fa-user"></i></h4>
+    <nav>
+      <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+      <span translate>Usuários</span>
+    </nav>
+    <br>
+    <div class="modal-content">
+      <!-- Buscador -->
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-3">
+              <a translate>Equipes</a><i *ngIf="buscandoEquipes"
+                class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+              <ng-select [items]="team" [multiple]="true" bindLabel="Nome" groupBy="gender" [selectableGroup]="true"
+                [closeOnSelect]="false" bindValue="Id" [(ngModel)]="selectedTeam">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.Id">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.id}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.Nome}}
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Nome</a>
+              <input type="text" class="form-control col-sm-1" [(ngModel)]="filter.nome">
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Login</a>
+              <input type="text" class="form-control col-sm-1" [(ngModel)]="filter.login">
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Email</a>
+              <input type="text" class="form-control col-sm-1" [(ngModel)]="filter.email">
+              <span class="text-danger" *ngIf="validEmail"><small translate>Informe um Email válido</small></span>
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Status:</a>
+              <select class="form-control" [(ngModel)]="filter.ativo">
+                <option [value]="null" translate>Todos</option>
+                <option [value]="true" translate>Ativo</option>
+                <option [value]="false" translate>Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="col" style="text-align: right">
+            <button type="button" class="btn botaoComum btn-group mr-2 mb-2" role="group" (click)="buscar()"><span
+                translate>Buscar</span>&nbsp;&nbsp;<i class="fa fa-search"></i></button>
+            <button type="button" class="btn botaoCancelar btn-group mr-2 mb-2" role="group" (click)="Limpar()"><span
+                translate>Limpar Filtros</span>&nbsp;&nbsp;<i class="fa fa-trash"></i></button>
+            <button type="button" class="btn botaoComum btn-group mr-2 mb-2" role="group" routerLink='/User'><span
+                translate>Novo</span>&nbsp;&nbsp;<i class="fa fa-user-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Fim buscador-->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card-box" style="height: 58rem;">
+          <div class="table-rep-plugin">
+
+            <!-- Area onde esta os botoes referentes a paginação -->
+            <nav *ngIf="grid.totalPages > 1" style="margin-top: 20px;">
+              <ul class="pager">
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToFirstPage()">
+                    <i class="fa fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToPreviousPage()">
+                    <i class="fa fa-angle-left"></i>
+                  </a>
+                </li>
+                <li>
+                  <span class="mb-2" translate>Página</span>
+                  <a class="mb-2">
+                    {{ grid.pageIndex }}
+                  </a>
+                  <span class="mb-2" translate>de</span>
+                  <a class="mb-2">
+                    {{ grid.totalPages }}
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToNextPage()">
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToLastPage()">
+                    <i class="fa fa-angle-double-right"></i>
+                  </a>
+                </li>
+                <li class="col-4" style="float: right;">
+                  <span translate>Total de Dados </span>
+                  {{grid.totalRows}}
+                </li>
+              </ul>
+            </nav>
+            <!-- final da área de paginação
+                 -->
+            <div class="table-responsive" data-pattern="priority-columns" style="height: 48rem;">
+              <div class="table-loading text-center" *ngIf="grid.loading && !grid.error">
+                <i class="fa fa-spinner fa-spin fa-5x fa-fw text-autodocs"></i>
+              </div>
+
+              <table class="table  table-striped">
+                <thead>
+                  <tr>
+                    <th data-priority="1" translate>NOME</th>
+                    <th data-priority="1" translate>LOGIN</th>
+                    <th data-priority="1" translate>EMAIL</th>
+                    <th data-priority="1" translate>ATIVO</th>
+                    <th data-priority="3" translate>MENU</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of grid.itens">
+                    <td>{{item.nome}}</td>
+                    <td>{{item.login}}</td>
+                    <td>{{item.email}}</td>
+                    <td *ngIf="item.ativo == true"><i class="fa fa-check" style="color:green; font-size: 2.0em;"></i>
+                    </td>
+                    <td *ngIf="item.ativo == false"><i class="fa fa-check" style="color:gray; font-size: 2.0em;"></i>
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-secondary waves-effect" data-toggle="dropdown"
+                          aria-expanded="false" aria-dropeffect="popup">
+                          <i class="dripicons-menu"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modalEdit"
+                            (click)="setUsuario(item)"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span
+                              translate>Editar</span></button>
+
+                          <button *ngIf="item.ativo" class="dropdown-item" type="button" data-toggle="modal"
+                            data-target="#modalConfirmDesativar" (click)="setUsuario(item)"><i
+                              class="fa fa-user-times"></i>&nbsp;&nbsp;<span translate>Inativar</span></button>
+
+                          <button *ngIf="!item.ativo" class="dropdown-item" type="button" data-toggle="modal"
+                            data-target="#modalConfirmAtivar" (click)="setUsuario(item)"><i
+                              class="fa fa-user-plus"></i>&nbsp;&nbsp;<span translate>Ativar</span></button>
+
+                          <button class="dropdown-item" type="button" (click)="AdicionarEquipe(item)"><i
+                              class="fa fa-gears"></i>&nbsp;&nbsp;<span translate>Manutenção</span>
+                            de Equipe</button>
+
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="!grid.loading && grid.itens.length == 0">
+                    <td class="text-center" colspan="5" translate>Não foi encontrado registros</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- área de botões da paginação no rodape da tabela -->
+            <nav *ngIf="grid.totalPages > 1" style="margin-top: 20px;">
+              <ul class="pager">
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToFirstPage()">
+                    <i class="fa fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToPreviousPage()">
+                    <i class="fa fa-angle-left"></i>
+                  </a>
+                </li>
+                <li>
+                  <span class="mb-2" translate>Página</span>
+                  <a class="mb-2">
+                    {{ grid.pageIndex }}
+                  </a>
+                  <span class="mb-2" translate>de</span>
+                  <a class="mb-2">
+                    {{ grid.totalPages }}
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToNextPage()">
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToLastPage()">
+                    <i class="fa fa-angle-double-right"></i>
+                  </a>
+                </li>
+                <li class="col-4" style="float: right;">
+                  <span translate>Total de Dados </span>
+                  {{grid.totalRows}}
+                </li>
+              </ul>
+            </nav>
+            <!-- fim da área de paginação no rodape da tabela -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Edituser-->
+      <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabel" translate>Edição de Usuário</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label *ngIf="usuario" for="recipient-name" class="col-form-label" translate>Nome:</label>
+                <input type="text" class="form-control" id="nome" name="usuarioNome" [(ngModel)]="usuarioNome">
+                <label for="recipient-name" class="col-form-label" translate>Login</label>
+                <input type="text" class="form-control" name="usuarioLogin" [(ngModel)]="usuarioLogin">
+                <label for="recipient-name" class="col-form-label" translate>Email</label>
+                <input type="text" class="form-control" name="usuarioEmail" [(ngModel)]="usuarioEmail">
+                <label for="recipient-name" class="col-form-label" translate>Password</label>
+                <input type="password" class="form-control" name="usuarioSenha" [(ngModel)]="usuarioSenha"
+                  (input)="validaSenha()">
+                <label for="recipient-name" class="col-form-label" translate>Cargo</label>
+                <input type="text" class="form-control" name="cargo" [(ngModel)]="cargo"  maxlength="70">  
+                <div>
+                  <span *ngIf="usuarioSenha && !forte" class="text-danger"><small translate>Senha Fraca</small></span>
+                  <span *ngIf="usuarioSenha && forte" class="text-success"><small translate>Senha Forte</small></span>
+                </div>
+                <label for="recipient-name" class="col-form-label" translate>Grupo de Acesso</label>
+                <select class="form-control" [(ngModel)]="grupoId">
+                  <option class="form-control" *ngFor="let grupo of accessGroup" [value]="grupo.id">{{grupo.nome}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span
+                  translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+              <button type="button" class="btn botaoSalvar" (click)="Modificar()" data-dismiss="modal"><span
+                  translate>Salvar mudanças</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal confirmar delete -->
+      <div class="modal fade" id="modalConfirmDesativar" tabindex="-1" role="dialog"
+        aria-labelledby="modalConfirmDesativar" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 *ngIf="" class="modal-title" id="ModalLabel" translate>Inativar Usuário</h5>
+              <h5 class="modal-title" id="ModalLabel" translate>Inativar Usuário</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label" translate>Inativar?</label>
+                <input type="text" class="form-control" name="usuarioNome" [(ngModel)]="usuarioNome" disabled>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span
+                  translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+              <button type="button" class="btn botaoSalvar" (click)="Excluir()" data-dismiss="modal"><span
+                  translate>Confirmar</span>&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal confirmar ativar -->
+      <div class="modal fade" id="modalConfirmAtivar" tabindex="-1" role="dialog" aria-labelledby="modalConfirmAtivar"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabel" translate>Ativar Usuário</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label" translate>Ativar?</label>
+                <input type="text" class="form-control" name="usuarioNome" [(ngModel)]="usuarioNome" disabled>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span
+                  translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+              <button type="button" class="btn botaoSalvar" (click)="Ativar()" data-dismiss="modal"><span
+                  translate>Confirmar</span>&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- container -->
+
+</div>
+<!-- content -->
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>

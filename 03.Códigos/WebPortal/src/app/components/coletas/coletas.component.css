@@ -1,0 +1,44 @@
+.e-time-wrapper.e-custom-style .e-float-text.e-label-bottom, /* csslint allow: adjoining-classes */
+.e-time-wrapper.e-custom-style .e-input-group-icon.e-time-icon.e-icons { /* csslint allow: adjoining-classes */
+    color: blue;
+}
+
+.estrelas{
+    color: goldenrod;
+}
+
+.checkverde{
+    color: green;
+    font-size: 2.0em;
+}
+
+.checkCinza{
+    color: gray;
+    font-size: 2.0em;
+}
+
+#control_wrapper {
+    max-width: 246px;
+    margin: 30px auto;
+    padding-top: 50px;
+}
+.control-section {
+    margin: 25px auto;
+}
+
+.inlineTime{
+    display: inline-block;
+}
+
+.tamanhoTime{
+    max-width: 49%!important;
+}
+
+.tamanhoSeletor{
+    max-width: 50%!important;
+}
+
+.inputExtra{
+    max-height: 36px!important;
+}
+

@@ -1,0 +1,52 @@
+<h4><span translate>Equipes</span>&nbsp;&nbsp;<i class="fa fa-users"></i></h4>
+    <nav>
+      <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+      <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/Teams" translate>Equipes</a></u><span> / </span>
+      <span translate>Adicionar Usuários</span>
+    </nav>
+    <br>
+<section class="content" style="margin: 0 auto;">
+  <div class="card-group">
+    <div class="card" style="width: 18rem;">
+      <div class="card-header text-center">
+        <h5 class="card-title" translate>Usuários vinculados</h5>
+      </div>
+      <div class="card-body text-center mb-2 mt-2">
+        <p class="card-text" *ngFor="let usuarioAdicionado of usuariosAdicionados">
+          <a class="pointer" (click)="RetirarUsuario(usuarioAdicionado)">{{usuarioAdicionado.nome}}</a>
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <br>
+      <br>
+      <div>
+        <button class="btn btn-group botaoComum btn-mg" (click)="AdicionaTodos(usuarioAdicionar)"><i class="fa fa-angle-double-left"></i>&nbsp;&nbsp;<span translate>Todos</span></button>
+      </div>
+      <br>
+      <div>
+        <button class="btn btn-group botaoComum btn-mg" (click)="RetiraTodos(usuariosAdicionados)"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;<span translate>Todos</span></button>
+      </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+      <div class="card-header text-center">
+        <h5 class="card-title" translate>Usuários não vinculados</h5>
+      </div>
+      <div class="card-body text-center mb-2 mt-2">
+        <p class="card-text" *ngFor="let usuario of usuarioAdicionar">
+          <a class="pointer" (click)="AdicionarUsuario(usuario)">{{usuario.nome}}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="modal-footer">
+    <button class="btn btn-group botaoCancelar float-right" routerLink='/Teams'><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+    <button class="btn btn-group botaoSalvar float-right" (click)="Salvar()"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+  </div>
+</section>
+
+<ngx-spinner bdColor = "rgba(51, 51, 51, 0.8)" size = "large" color = "#fff" type = "ball-triangle-path"></ngx-spinner>

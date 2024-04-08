@@ -1,0 +1,10 @@
+<div *ngIf="perguntas" class="col-12">
+  <h5>{{perguntas.numeroDescricao}}</h5>
+  <div> 
+    <input class="form-control" type="text" [(ngModel)]="resposta" [disabled]="disable" style="background: white"/>
+  </div>
+  <div *ngIf="mostrar">
+    <app-multimidia [idColeta]="idColeta" [multimidia]="multimidia"></app-multimidia>
+  </div> 
+</div>
+

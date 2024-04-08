@@ -1,0 +1,605 @@
+<div class="content">
+  <div class="container">
+    <h4><span translate>Entidades de Negócio</span>&nbsp;&nbsp;<i class="fa fa-sitemap"></i></h4>
+    <nav>
+      <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+      <span translate>Entidades de Negócio</span>
+    </nav>
+    <br>
+    <div class="modal-content">
+
+      <!-- Buscador -->
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-3">
+              <a translate>Tipos de Entidade</a><i *ngIf="carregandoTipoEntidades"
+                class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+              <ng-select [items]="TiposEntidades" [multiple]="true" bindLabel="descricao" groupBy="gender"
+                [selectableGroup]="true" [closeOnSelect]="true" bindValue="id" [(ngModel)]="tipoEntidadeId">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.idTipoEntidade">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" />{{item.id}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" />{{item.descricao}}
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Código Externo</a>
+              <input type="text" class="form-control col-sm-1" [(ngModel)]="codExterno">
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Descrição</a>
+              <input type="text" class="form-control col-sm-1" [(ngModel)]="buscaDescricao">
+            </div>
+
+            <div class="col-sm-3">
+              <a translate>Status:</a>
+              <select class="form-control" [(ngModel)]="ativo">
+                <option [value]="null" translate>Todos</option>
+                <option [value]="true" translate>Ativo</option>
+                <option [value]="false" translate>Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="col" style="text-align: right">
+            <button type="button" class="btn botaoComum btn-group mr-2 mb-2" role="group" (click)="buscar()">
+              <span translate>Buscar</span>&nbsp;&nbsp;<i class="fa fa-search"></i>
+              <i *ngIf="grid.loading && !grid.error" class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+            </button>
+            <button type="button" class="btn botaoCancelar btn-group mr-2 mb-2" role="group" (click)="Limpar()">
+              <span translate>Limpar Filtros</span>&nbsp;&nbsp;<i class="fa fa-trash"></i>
+            </button>
+            <button type="button" class="btn botaoComum btn-group mr-2 mb-2" role="group" data-toggle="modal"
+              data-target="#modalNewEntidade" (click)="limparModalEntidade()">
+              <span translate>Nova Entidade</span>&nbsp;&nbsp;<i class="fa fa-user-plus"></i>
+            </button>
+            <button type="button" class="btn botaoComum btn-group mr-2 mb-2" role="group" data-toggle="modal"
+              data-target="#modalNewTipoEntidade" (click)="limparModalTipoEntidade()">
+              <span translate>Novo Tipo Entidade</span>&nbsp;&nbsp;<i class="fa fa-user-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card-box" style="height: 58rem;">
+
+          <!-- elemento de paginação acima da tabela -->
+          <nav *ngIf="grid.totalRows > 0 && grid.totalPages > 0" style="margin-top: 20px;">
+              <ul class="pager">
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToFirstPage()">
+                    <i class="fa fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToPreviousPage()">
+                    <i class="fa fa-angle-left"></i>
+                  </a>
+                </li>
+                <li>
+                  <span class="mb-2" translate>Página</span>
+                  <a class="mb-2">
+                    {{ grid.pageIndex }}
+                  </a>
+                  <span class="mb-2" translate>de</span>
+                  <a class="mb-2">
+                    {{ grid.totalPages }}
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToNextPage()">
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="pointer mr-5 mb-2">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToLastPage()">
+                    <i class="fa fa-angle-double-right"></i>
+                  </a>
+                </li>
+                <li class="col-4" style="text-align: Center;">
+                  <span translate>Entidades por página: </span>
+                  <select [(ngModel)]="pageSize" (change)="setPage()" class="mb-2 mr-2">
+                    <option [value]="20" translate>20</option>
+                    <option [value]="50" translate>50</option>
+                    <option [value]="100" translate>100</option>
+                    <option [value]="200" translate>200</option>
+                  </select>
+                </li>
+                <li class="col-4" style="float: right;">
+                  <span translate>Total de Entidades </span>
+                  {{grid.totalRows}}
+                </li>
+              </ul>
+            </nav>
+            <!-- fim do elemento de paginação acima da tabela -->
+          <div class="table-rep-plugin">
+            <div class="table-responsive" data-pattern="priority-columns" style="height: 48rem;">
+              <div class="text-center" *ngIf="grid.totalRows == 0">
+                <span translate>Não foi encontrado registros</span>
+              </div>
+              <table *ngIf="grid.totalRows > 0" class="table table-striped table-reponsive">
+                <thead>
+                  <tr>
+                    <th data-priority="1" translate>CÓDIGO</th>
+                    <th data-priority="1" translate>DESCRIÇÃO</th>
+                    <th data-priority="1" translate>TIPO</th>
+                    <th data-priority="1" translate>CLIENTE</th>
+                    <th data-priority="1" translate>ATIVO</th>
+                    <th data-priority="1" translate>DATA ALTERAÇÃO</th>
+                    <th data-priority="1" translate></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entidade of grid.itens">
+                    <td>{{entidade.codExterno}}</td>
+                    <td>{{entidade.descricao}}</td>
+                    <td>{{entidade.tipoDescricao}}</td>
+                    <td>{{entidade.nomeCliente}}</td>
+                    <td *ngIf="entidade.ativo == true"><i class="fa fa-check checkverde"></i></td>
+                    <td *ngIf="entidade.ativo == false"><i class="fa fa-check checkCinza"></i></td>
+                    <td>{{entidade.dtAlteracao | date: dateFormat}}</td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-secondary waves-effect" data-toggle="dropdown"
+                          aria-expanded="false" aria-dropeffect="popup">
+                          <i class="dripicons-menu"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                          <button class="dropdown-item" type="button" (click)="SetarEditarEntidade(entidade)"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span
+                              translate>Editar</span></button>
+
+                          <button class="dropdown-item" type="button" (click)="SetarExcluirEntidade(entidade)" [disabled]="entidade.ativo == false"><i
+                              class="fa fa-user-times"></i>&nbsp;&nbsp;<span translate>Inativar</span></button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- elemento de paginação no rodapé da tabela -->
+          <nav *ngIf="grid.totalRows > 0 && grid.totalPages > 0" style="margin-top: 20px;">
+              <ul class="pager">
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToFirstPage()">
+                    <i class="fa fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasPreviousPage()" (click)="grid.goToPreviousPage()">
+                    <i class="fa fa-angle-left"></i>
+                  </a>
+                </li>
+                <li>
+                  <span class="mb-2" translate>Página</span>
+                  <a class="mb-2">
+                    {{ grid.pageIndex }}
+                  </a>
+                  <span class="mb-2" translate>de</span>
+                  <a class="mb-2">
+                    {{ grid.totalPages }}
+                  </a>
+                </li>
+                <li class="pointer">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToNextPage()">
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="pointer mr-5 mb-2">
+                  <a [class.disabled]="!grid.hasNextPage()" (click)="grid.goToLastPage()">
+                    <i class="fa fa-angle-double-right"></i>
+                  </a>
+                </li>
+                <li class="col-4" style="text-align: Center;">
+                  <span translate>Entidades por página: </span>
+                  <select [(ngModel)]="pageSize" (change)="setPage()" class="mb-2 mr-2">
+                    <option [value]="20" translate>20</option>
+                    <option [value]="50" translate>50</option>
+                    <option [value]="100" translate>100</option>
+                    <option [value]="200" translate>200</option>
+                  </select>
+                </li>
+                <li class="col-4" style="float: right;">
+                  <span translate>Total de Entidades </span>
+                  {{grid.totalRows}}
+                </li>
+              </ul>
+            </nav>
+            <!-- fim do elemento de paginação no rodapé da tabela -->
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de cadastro de Tipo de entidade -->
+    <div class="modal" id="modalNewTipoEntidade" tabindex="-1" role="dialog" aria-labelledby="modalNewTipoEntidade"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Novo Tipo Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body tab-content">
+              <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item"><a class="nav-link active" href="#first-tab" data-toggle="tab" translate>Tipo Entidade</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#second-tab" data-toggle="tab" translate>Campos Adicionais</a></li>
+              </ul>
+
+              <div class="tab-pane active in" id="first-tab">
+            <div class="col-12">
+              <span translate>Tipos de Entidade Pai</span><i *ngIf="carregandoTipoEntidades"
+                class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+              <select class="form-control" [(ngModel)]="idTipoEntidade">
+                <option class="form-group" *ngFor="let tipoEntidade of TiposEntidades" [value]="tipoEntidade.id">{{tipoEntidade.descricao}}</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <span translate>Descrição</span>
+              <input class="form-control" [(ngModel)]="descricaoEntidade">
+            </div>
+            <table class="table  table-striped">
+              <thead>
+                <tr>
+                  <th data-priority="4" translate>CODIGO</th>
+                  <th data-priority="4" translate>DESCRIÇÃO</th>
+                  <th data-priority="1"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tipoEntidade of TiposEntidades" class="text-align: center;">
+                  <th>{{tipoEntidade.id}}</th>
+                  <th class="text-align: center;">{{tipoEntidade.descricao}}</th>
+                  <th>
+                    <div class="btn-group">
+                      <button class="dropdown-item" type="button" (click)="setarTipoEntidade(tipoEntidade)"><i
+                          class="fa fa-pencil" style="color:darkgoldenrod;"></i>&nbsp;&nbsp;<span
+                          translate>Editar</span></button>
+                      <button class="dropdown-item" type="button" (click)="setarTipoEntidadeExcluir(tipoEntidade)"><i
+                          class="fa fa-remove" style="color: red;"></i>&nbsp;&nbsp;<span
+                          translate>Excluir</span></button>
+                    </div>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+              </div>
+              <div class="tab-pane" id="second-tab">
+                  <div class="col-12">
+                      <label for="recipient-name" class="col-form-label" translate>Sigla</label>
+                      <input type="text" class="form-control" name="siglaParametro" [(ngModel)]="siglaTipoEntidadeCampo">
+
+                      <label for="recipient-name" class="col-form-label" translate>Nome</label>
+                      <input type="text" class="form-control" name="nomeParametro" [(ngModel)]="nomeTipoEntidadeCampo">
+
+                      <label for="recipient-name" class="col-form-label" translate>Tipo</label>
+                      <select class="form-control" [(ngModel)]="tiposTipoEntidadeCampo">
+                        <option [value]=1 translate>Texto</option>
+                        <option [value]=2 translate>Número</option>
+                        <option [value]=3 translate>data</option>
+                          <!-- <option [value]=4>Bit</option> -->
+                      </select>
+                      <br>
+
+                      <div>
+                        <input type="checkbox" [(ngModel)]="obrigatorio">
+                        <label for="recipient-name" class="col-form-label" translate>Obrigatório</label>
+                      </div>
+
+                      <button class="btn botaoComum setaDireita mb-2" type="button" (click)="AdicionarCampo()"><span translate>Adicionar Campo</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button> 
+                  </div>
+                  <br />
+                  <table class="table  table-striped">
+                      <thead>
+                        <tr>
+                          <th data-priority="3" translate>CODIGO</th>
+                          <th data-priority="3" translate>DESCRIÇÃO</th>
+                          <th data-priority="3" translate>TIPO</th>
+                          <th data-priority="1"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let entidade of tiposEntidadeCampos" class="text-align: center;">
+                            <th>{{entidade.codigo}}</th>
+                            <th>{{entidade.nome}}</th>
+                            <th *ngIf="entidade.tipo == 1" translate>Texto</th>
+                            <th *ngIf="entidade.tipo == 2" translate>Número</th>
+                            <th *ngIf="entidade.tipo == 3" translate>Data</th>
+                            <!-- <th *ngIf="entidade.tipo == 4" translate>Sim/Não</th> -->
+                            <th>
+                                <button class="dropdown-item" type="button" (click)="excluirTipoEntidadeCampo(entidade)"><i class="fa fa-remove" style="color: red;"></i>&nbsp;&nbsp;<span
+                                  translate>Excluir</span></button>
+                            </th>
+                          </tr>
+                      </tbody>
+                    </table>
+                             
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="salvarTipoEntidade()" translate>Salvar&nbsp;&nbsp;<i
+                class="fa fa-save"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Termino do modal de cadastro de Tipo de Entidade -->
+
+    <div class="modal" id="modalExcluirTipoEntidade" tabindex="-1" role="dialog"
+      aria-labelledby="modalExcluirTipoEntidade" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Excluir Tipo Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span translate>Deseja realmente deletar Tipo Entidade</span>
+            <input class="col-12" [(ngModel)]="nomeTipoEntidadeExcluir" disabled>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="excluirTipoEntidade()"><span translate>Confirmar</span>&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Começo do modal de cadastro de nova entidade -->
+    <div class="modal" id="modalNewEntidade" tabindex="-1" role="dialog" aria-labelledby="modalNewEntidade"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Novo Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span translate>Tipo Entidade</span>
+            <select class="form-control" [(ngModel)]="TipoEntidadeID" (change)="BuscarEntidadePai()">
+              <option class="form-group" *ngFor="let tipoEntidade of TiposEntidades" [value]="tipoEntidade.id">
+                {{tipoEntidade.descricao}}</option>
+            </select>
+
+            <span translate>Entidade Pai</span>&nbsp;&nbsp;<i *ngIf="carregandoEntidadePai"
+              class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+            <select class="form-control" [(ngModel)]="EntidadePaiID">
+              <option class="form-group" *ngFor="let entidadePai of entidadesPai" [value]="entidadePai.id">
+                {{entidadePai.descricao}}</option>
+            </select>
+
+            <span translate>Código</span>
+            <input class="form-control" [(ngModel)]="InputCodExterno">
+
+            <span translate>Descrição</span>
+            <input class="form-control" [(ngModel)]="InputDescricao">
+
+            <!-- <div *ngFor="let campos of EntidadeCampos; let i = index"> -->
+            <div *ngFor="let campos of EntidadeCampos">
+              <span *ngIf="campos.ativo == true">{{campos.nome}}</span>
+              <div *ngFor="let adicionar of AdicionarEntidadeCampos">
+                  <input *ngIf="campos.tipo == 1 && campos.ativo == true && campos.id == adicionar.idTipoEntidadeCampo" type="text" class="form-control" [(ngModel)]="adicionar.valor" (change)="setarValorNovaEntidadeCampo(campos, adicionar.valor, null)">
+                  <input *ngIf="campos.tipo == 2 && campos.ativo == true && campos.id == adicionar.idTipoEntidadeCampo" type="number" class="form-control" [(ngModel)]="adicionar.valor" (change)="setarValorNovaEntidadeCampo(campos, adicionar.valor, null)">
+                  <ejs-datepicker *ngIf="campos.tipo == 3 && campos.ativo == true && campos.id == adicionar.idTipoEntidadeCampo" zIndex="2000" [(value)]='adicionar.valor' [max]='dataMaxima' [locale]="lang" (change)="setarValorNovaEntidadeCampo(campos, null, adicionar.valor)"></ejs-datepicker>
+              </div>
+              <!-- <input *ngIf="campos.tipo == 1 && campos.ativo == true" type="text" class="form-control" [(ngModel)]="AdicionarEntidadeCampos[i].valor" (change)="setarValorNovaEntidadeCampo(campos, AdicionarEntidadeCampos[i].valor, null)">
+              <input *ngIf="campos.tipo == 2 && campos.ativo == true" type="number" class="form-control" [(ngModel)]="AdicionarEntidadeCampos[i].valor" (change)="setarValorNovaEntidadeCampo(campos, AdicionarEntidadeCampos[i].valor, null)">
+              <ejs-datepicker *ngIf="campos.tipo == 3 && campos.ativo == true" zIndex="2000" [(value)]='AdicionarEntidadeCampos[i].valor' [max]='dataMaxima' [locale]="lang" (change)="setarValorNovaEntidadeCampo(campos, null, AdicionarEntidadeCampos[i].valor)"></ejs-datepicker> -->
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="salvarEntidade()" translate>Salvar&nbsp;&nbsp;<i
+                class="fa fa-save"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Termino do modal de cadastro de nova entidade -->
+
+    <!-- Modal para modificar o Tipo De Entidade -->
+    <div class="modal" id="modalModificarTipoEntidade" tabindex="-1" role="dialog"
+      aria-labelledby="modalModificarTipoEntidade" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Modificar Tipo Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span translate>Descrição</span>
+            <input class="form-control" [(ngModel)]="modificarTipoEntidade.descricao">
+          </div>
+          <div *ngIf="modificarTipoEntidade.tipoEntidadeCampos">
+            <p translate>Campos Adicionais</p>
+          </div>
+          <div *ngFor="let tipoEntidade of modificarTipoEntidade.tipoEntidadeCampos">
+            <div *ngIf="tipoEntidade.ativo">
+              <label for="recipient-name" class="col-form-label" translate>Nome</label>
+              <input type="text" class="form-control" name="nomeParametro" [(ngModel)]="tipoEntidade.nome">
+
+              <div>
+                <input type="checkbox" [(ngModel)]="tipoEntidade.obrigatorio">
+                <label for="recipient-name" class="col-form-label" translate>Obrigatório</label>
+              </div>
+
+              <button class="dropdown-item" type="button" (click)="excluirCampo(tipoEntidade.id)"><i class="fa fa-remove" style="color: red;"></i>&nbsp;&nbsp;<span translate>Excluir</span></button>
+          </div>
+        </div>
+        <button class="btn botaoComum setaDireita mr-2" type="button" (click)="AdicionarNovoCampoModificar(modificarTipoEntidade.tipoEntidadeCampos)"><span translate>Adicionar Campo</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="editarTipoEntidade()" translate>Salvar&nbsp;&nbsp;<i
+                class="fa fa-save"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Termino do modal de EditarTipoEntidade -->
+
+    <div class="modal" id="modalExcluirEntidade" tabindex="-1" role="dialog" aria-labelledby="modalExcluirEntidade"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Excluir Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span translate>Deseja realmente deletar Entidade</span>
+            <input class="col-12" [(ngModel)]="nomeEntidadeExcluir" disabled>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="excluirEntidade()" translate>Confirmar&nbsp;&nbsp;<i
+                class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal para cadastrar novo campo ao clicar em editar tipoEntidade -->
+    <div class="modal" id="modalAdicionarCampo" tabindex="-1" role="dialog" aria-labelledby="modalAdicionarCampo"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Adicionar Campo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Dados para incluir Campo -->
+              <div class="col-12">
+                  <label for="recipient-name" class="col-form-label" translate>Sigla</label>
+                  <input type="text" class="form-control" name="siglaParametro" [(ngModel)]="siglaTipoEntidadeCampo">
+
+                  <label for="recipient-name" class="col-form-label" translate>Nome</label>
+                  <input type="text" class="form-control" name="nomeParametro" [(ngModel)]="nomeTipoEntidadeCampo">
+
+                  <label for="recipient-name" class="col-form-label" translate>Tipo</label>
+                  <select class="form-control" [(ngModel)]="tiposTipoEntidadeCampo">
+                      <option [value]=1 translate>Texto</option>
+                      <option [value]=2 translate>Número</option>
+                      <option [value]=3 translate>data</option>
+                  </select>
+                  <br>
+                  <div>
+                    <input type="checkbox" [(ngModel)]="obrigatorio">
+                    <label for="recipient-name" class="col-form-label" translate>Obrigatório</label>
+                  </div>
+
+                  <button class="btn botaoComum setaDireita mr-2" type="button" (click)="AdicionarCampo()"><span translate>Adicionar Campo</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button> 
+              </div>
+              <br />
+              <table class="table  table-striped">
+                  <thead>
+                    <tr>
+                      <th data-priority="3" translate>CODIGO</th>
+                      <th data-priority="3" translate>DESCRIÇÃO</th>
+                      <th data-priority="3" translate>TIPO</th>
+                      <th data-priority="1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entidade of tiposEntidadeCampos" class="text-align: center;">
+                        <th>{{entidade.codigo}}</th>
+                        <th>{{entidade.nome}}</th>
+                        <th *ngIf="entidade.tipo == 1" translate>Texto</th>
+                        <th *ngIf="entidade.tipo == 2" translate>Número</th>
+                        <th *ngIf="entidade.tipo == 3" translate>Data</th>
+                        <th>
+                            <button class="dropdown-item" type="button" (click)="excluirTipoEntidadeCampo(entidade)"><i class="fa fa-remove" style="color: red;"></i>&nbsp;&nbsp;<span
+                              translate>Excluir</span></button>
+                        </th>
+                      </tr>
+                  </tbody>
+                </table>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="salvarNovosCampos()" translate>Confirmar&nbsp;&nbsp;<i
+                class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modalModificarEntidade" tabindex="-1" role="dialog" aria-labelledby="modalModificarEntidade"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" translate>Modificar Entidade</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span translate>Código</span>
+            <input class="col-12" [(ngModel)]="modificarCod">
+
+            <span translate>Descrição</span>
+            <input class="col-12" [(ngModel)]="entidadeEditar.Descricao">
+          
+            <div *ngIf="EntidadeModificar.length > 0">
+              <div *ngFor="let campos of TipoEntidadeModificar.tipoEntidadeCampos">
+              <!-- <div *ngFor="let campos of TipoEntidadeModificar.tipoEntidadeCampos; let i= index"> -->
+                <span *ngIf="campos.ativo == true">{{campos.nome}}</span>
+                <!-- Faz a varedura dentro do arrey com os tipoEntidade para preenchimento da tela -->
+                  <div *ngFor="let resposta of EntidadeModificar">
+                    <input *ngIf="campos.tipo == 1 && campos.ativo == true && campos.id == resposta.idTipoEntidadeCampo" type="text" class="col-12" [(ngModel)]="resposta.valor">
+                    <input *ngIf="campos.tipo == 2 && campos.ativo == true && campos.id == resposta.idTipoEntidadeCampo"  type="number" class="col-12" [(ngModel)]="resposta.valor">
+                    <ejs-datepicker *ngIf="campos.tipo == 3 && campos.ativo == true && campos.id == resposta.idTipoEntidadeCampo" zIndex="2000" [(value)]="resposta.valor" [max]='dataMaxima' [locale]="lang" (change)="setarValorCampo(resposta, campos, null, campoData)"></ejs-datepicker>
+                  </div>
+                  <!-- parte que havia antes que preechia de forma sequencial -->
+                <!-- <input *ngIf="campos.tipo == 1 && campos.ativo == true" type="text" class="col-12" [(ngModel)]="EntidadeModificar[i].valor">
+                <input *ngIf="campos.tipo == 2 && campos.ativo == true"  type="number" class="col-12" [(ngModel)]="EntidadeModificar[i].valor">
+                <ejs-datepicker *ngIf="campos.tipo == 3 && campos.ativo == true" zIndex="2000" [(value)]="EntidadeModificar[i].valor" [max]='dataMaxima' [locale]="lang" (change)="setarValorCampo(EntidadeModificar[i], campos, null, campoData)"></ejs-datepicker> -->
+              </div>
+            </div>          
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn botaoCancelar" data-dismiss="modal" translate>Cancelar&nbsp;&nbsp;<i
+                class="fa fa-ban banIcon"></i></button>
+            <button type="button" class="btn botaoSalvar" (click)="ModificarEntidade()"
+              translate>Confirmar&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

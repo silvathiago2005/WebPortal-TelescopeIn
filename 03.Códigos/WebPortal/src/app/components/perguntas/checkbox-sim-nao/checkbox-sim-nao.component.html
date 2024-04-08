@@ -1,0 +1,11 @@
+<div class="col-12">
+  <h5>{{perguntas.numeroDescricao}}</h5>
+  <div class="checkbox-control">
+    <div class="row col-12" *ngFor="let alternativas of dadosSelecao">
+      <app-sim-nao [dadosSelecao]="alternativas" [coletas]="coletas" [perguntas]="perguntas" [disabled]="disable"></app-sim-nao>
+    </div>
+  </div>
+  <div *ngIf="mostrar">
+    <app-multimidia [multimidia]="multimidia" [idColeta]="idColeta"></app-multimidia>
+  </div> 
+</div>

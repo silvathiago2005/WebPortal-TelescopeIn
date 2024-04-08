@@ -1,0 +1,70 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>
+
+<div class="content">
+  <div class="container">
+    <!-- <br> -->
+    <div class="row">
+      <div class="col-12">
+          <h4><span translate>Relatórios</span>&nbsp;&nbsp;<i class="fa fa-clipboard"></i></h4>
+          <nav>
+            <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+            <span translate>Relatórios</span>
+          </nav>
+          <br>
+        <div class="card-box" style="height: 50rem;">
+          <button *ngIf="idUsuario == 1" class="btn botaoComum waves-effect mb-1" type="button" (click)="adicionarRelatorio()"><span translate>Adicionar</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+          <div class="table-rep-plugin">
+            <div class="table-responsive" data-pattern="priority-columns" style="height: 44rem;">
+              <table class="table  table-striped">
+                <thead>
+                  <tr>
+                    <th data-priority="1"></th>
+                    <th data-priority="1" translate>ID</th>
+                    <th data-priority="1" translate>Nome</th>
+                    <th data-priority="1" translate>Data de Atualização</th>
+                    <th data-priority="1" translate>Executar</th>
+                  </tr>
+                </thead>
+                <tbody class="text-right" *ngIf="!relatorios">
+                  <div class="col-12 table-loading text-center" *ngIf="buscarRelatorios || inativandoRelatorio">
+                    <i class="fa fa-spinner fa-spin fa-4x fa-fw text-autodocs"></i>
+                  </div>
+                </tbody>
+                <tbody *ngIf="relatorios">
+                  <tr *ngFor="let relatorio of relatorios">
+                    <td>
+                        <div class="btn-group" *ngIf="relatorio && idUsuario == 1">
+                            <button type="button" class="btn btn-secondary waves-effect" data-toggle="dropdown" aria-expanded="false" aria-dropeffect="popup">
+                              <i class="dripicons-menu"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-relatorio" aria-labelledby="dropdownMenu">
+                              <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modalEdit" (click)="editarRelatorio(relatorio)"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span translate>Editar</span></button>
+    
+                              <button *ngIf="relatorio.ativo == true" class="dropdown-item" type="button" (click)="inativarRelatorio(relatorio)"><i class="fa fa-remove"></i>&nbsp;&nbsp;<span translate>Inativar</span></button>
+    
+                            </div>
+                          </div>
+                    </td>
+                    <td>{{relatorio.id}}</td>
+                    <td translate>{{relatorio.nomeRelatorio}}</td>
+                    <td>{{relatorio.dtAlteracao | date:dateFormat}} - {{relatorio.dtAlteracao | slice:11:16}}</td>
+                    <td>     
+                      <div class="btn-group mb-4 mr-4" *ngIf="relatorio">
+                        <button class="btn btn-success" (click)="executarRelatorio(relatorio)">
+                          <i class="ti-control-play"></i>
+                        </button>                       
+                      </div>                 
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- container -->
+</div>
+<!-- content -->

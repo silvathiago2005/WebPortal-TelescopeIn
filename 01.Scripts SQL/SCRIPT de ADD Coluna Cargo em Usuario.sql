@@ -1,0 +1,11 @@
+BEGIN TRAN a
+BEGIN TRY
+	ALTER TABLE [dbo].[Usuario] ADD Cargo varchar(70)
+
+	COMMIT TRAN a;
+	SELECT 'Sucesso' as Res
+END TRY
+BEGIN CATCH
+ROLLBACK TRAN a;
+	SELECT 'Erro' as Res
+END CATCH;

@@ -1,0 +1,138 @@
+<div class="content">
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <h4><span translate>Relatórios</span>&nbsp;&nbsp;<i class="fa fa-clipboard"></i></h4>
+                <nav>
+                    <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/" translate>Home</a></u><span>
+                        / </span>
+                    <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/Relatorios" translate>Relatórios</a></u><span>
+                        / </span>
+                    <span *ngIf="idRelatorio == '0'" translate>Adicionar</span>
+                    <span *ngIf="idRelatorio != '0'" translate>Modificar</span>
+                </nav>
+                <br>
+                <div class="card-box">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#first-tab" data-toggle="tab" translate>Dados
+                                Relatório</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#second-tab" data-toggle="tab" translate>Parâmetros
+                                do Relatório</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#third-tab" data-toggle="tab" translate>Script
+                                Sql</a></li>
+                    </ul>
+
+                    <div class="col-12 table-loading text-center" *ngIf="atualizandoRelatorio || salvandoRelatorio">
+                        <i class="fa fa-spinner fa-spin fa-4x fa-fw text-autodocs"></i>
+                    </div>
+
+
+                    <div class="tab-content">
+                        <div class="tab-pane active in" id="first-tab">
+                            <div class="row col-sm-12">
+                                <div class="col-sm-4">
+                                    <label for="recipient-name" class="col-form-label" translate>Nome do Relatório:</label>
+                                    <input type="text" class="form-control" name="nomeRelatorio" [(ngModel)]="nomeRelatorio">
+                                    <span class="text-danger" *ngIf="nomeRelatorio && !nomeRelatorio"><small translate>Nome</small></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="text" translate>Questionários<span class="text-danger">*</span></label>
+                                    <br>
+                                    <select class="form-control" [(ngModel)]="questionarioSelecionado" [disabled]="isGeneric">
+                                        <option class="form-group" *ngFor="let questionario of questionarios" [value]="questionario.id">{{questionario.descricao}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4 align-center">
+                                    <label> </label>
+                                    <br>
+                                    <input type="checkbox" class="text-center mr-2" name="isGeneric" [(ngModel)]="isGeneric">
+                                    <label for="recipient-name" class="col-form-label" translate>GENÉRICO</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="second-tab">
+                            <button class="btn botaoComum" type="button" data-toggle="modal" data-target="#modalAddParametro"><span translate>Adicionar Parâmetro</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+
+                            <div *ngIf="conjuntoParametros">
+                                <table class="table table-striped table-reponsive">
+                                    <thead>
+                                        <tr>
+                                            <th data-priority="1" translate>Sigla</th>
+                                            <th data-priority="1" translate>Nome</th>
+                                            <th data-priority="1" translate>Tipo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let para of conjuntoParametros">
+                                            <td>{{para.sigla}}</td>
+                                            <td>{{para.nomeParametro}}</td>
+                                            <td *ngIf="para.tipoParametro == 1" translate>Texto</td>
+                                            <td *ngIf="para.tipoParametro == 2" translate>Número</td>
+                                            <td *ngIf="para.tipoParametro == 3" translate>DataRelatorio</td>
+                                            <td *ngIf="para.tipoParametro == 4" translate>Sim/Não</td>
+                                            <td *ngIf="para.tipoParametro == 5" translate>Seleção</td>
+                                            <td><span class="badge badge-danger pointer" (click)="deletarParametro(para)">x</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="third-tab">
+                            <label class="col-form-label">Script Sql</label>
+                            <textarea class="form-control caixaScript" [(ngModel)]="comandoSql"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal modalAddParametro-->
+                <div class="modal fade" id="modalAddParametro" tabindex="-1" role="dialog" aria-labelledby="modalAddParametro"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalLabel" translate>Adicionar Parâmetro</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!-- corpo modal -->
+                            <div class="modal-body">
+                                <label for="recipient-name" class="col-form-label" translate>Sigla</label>
+                                <input type="text" class="form-control" name="siglaParametro" [(ngModel)]="siglaParametro">
+
+                                <label for="recipient-name" class="col-form-label" translate>Nome</label>
+                                <input type="text" class="form-control" name="nomeParametro" [(ngModel)]="nomeParametro">
+
+                                <label for="recipient-name" class="col-form-label" translate>Tipo</label>
+                                <select class="form-control" [(ngModel)]="tiposParametro">
+                                    <option [value]=1>Varchar</option>
+                                    <option [value]=2>BigInt</option>
+                                    <option [value]=3>DateTime</option>
+                                    <option [value]=4>Bit</option>
+                                    <option [value]=5>Combobox</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+                                <button *ngIf="siglaParametro && nomeParametro && tiposParametro" type="button" class="btn botaoSalvar"
+                                    (click)="guardarParametro()" data-dismiss="modal"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" class="btn botaoCancelar mb-2 mr-2" (click)="voltar()"><span translate>Voltar</span>&nbsp;&nbsp;<i class="fa fa-reply" ></i></button>
+                <button *ngIf="!dadosPrenchidos() && !editandoRelatorio" type="button" class="btn botaoSalvar mb-2 mr-2"
+                    (click)="gravarRelatorio()" [disabled]="true"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+                <button *ngIf="dadosPrenchidos() && !editandoRelatorio" type="button" class="btn botaoSalvar mb-2 mr-2"
+                    (click)="gravarRelatorio()"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+                <button *ngIf="editandoRelatorio" type="button" class="btn botaoSalvar mb-2 mr-2" (click)="atualizarRelatorio()"><span translate>Salvar mudanças</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

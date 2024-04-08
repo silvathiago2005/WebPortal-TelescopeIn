@@ -1,0 +1,41 @@
+<a *ngFor="let secao of perguntas">
+    <h4 class="tamanhoFonteRespostasColetas">{{secao.nome}}</h4>
+    <h5 class="tamanhoFonteRespostasColetas">{{secao.conteudoInformativo}}</h5>
+    <h5 class="tamanhoFonteRespostasColetas" *ngIf="secao.conteudoInformativo"></h5>
+    <div *ngFor="let perguntas of secao.perguntas">
+      <div *ngIf="perguntas.idTipoPergunta == 1">
+        <app-selecao-lista-externa [perguntas]="perguntas" [type]="'Externa'" [dadosSelecao]="[{id: 1, descricao: 'Telescopein'}, {id: 2, descricao: 'Everflow'}, {id: 3, descricao: 'lexNova'}, {id: 4, descricao: 'Builtcode'}]" [disable]="true"></app-selecao-lista-externa>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 2" (change)="setColeta(perguntas.idPergunta)">
+        <app-resposta-livre [coletas]="respostaAlternativa" [perguntas]="perguntas" [dadosSelecao]="perguntas.perguntaAlternativas" [disable]="true"></app-resposta-livre>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 3" class="control-section">
+        <app-checkbox [coletas]="respostaAlternativa" [perguntas]="perguntas" [dadosSelecao]="perguntas.perguntaAlternativas" [type]="type"></app-checkbox>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 4" class="control-section">
+        <app-checkbox-sim-nao [coletas]="respostaAlternativa" [perguntas]="perguntas" [dadosSelecao]="perguntas.perguntaAlternativas" [type]="type" [disable]="true"></app-checkbox-sim-nao>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 5" class="control-section">
+        <app-respota-livre-data [coletas]="respostaAlternativa" [perguntas]="perguntas" [type]="type" [disable]="true"></app-respota-livre-data>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 6" class="control-section">
+        <app-respota-livre-numerica [coletas]="respostaAlternativa" [perguntas]="perguntas" [type]="type" [disable]="true"></app-respota-livre-numerica>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 7" class="control-section">
+        <app-selecao-lista-externa [coletas]="respostaAlternativa" [perguntas]="perguntas" [type]="'Interna'" [dadosSelecao]="perguntas.perguntaAlternativas"></app-selecao-lista-externa>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 8" class="control-section">
+          <app-multi-selecao-checkbox-dimensao [coletas]="respostaAlternativa" [perguntas]="perguntas" [type]="null" [dadosSelecao]="perguntas.perguntaAlternativas"></app-multi-selecao-checkbox-dimensao>
+        </div>
+      <div *ngIf="perguntas.idTipoPergunta == 9" class="radiobutton-control">
+        <app-radio-button [coletas]="respostaAlternativa" [perguntas]="perguntas" [dadosSelecao]="perguntas.perguntaAlternativas" [type]="type"></app-radio-button>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 10">
+        <app-rating [coletas]="respostaAlternativa" [length]="10"></app-rating>
+      </div>
+      <div *ngIf="perguntas.idTipoPergunta == 11" (change)="setColeta(perguntas.idPergunta)">
+        <app-resposta-livre [coletas]="respostaAlternativa" [perguntas]="perguntas" [dadosSelecao]="perguntas.perguntaAlternativas" [disable]="true"></app-resposta-livre>
+      </div>
+    </div>
+
+  </a>

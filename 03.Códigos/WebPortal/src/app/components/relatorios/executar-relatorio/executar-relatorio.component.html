@@ -1,0 +1,77 @@
+<div class="content">
+  <div class="container">
+    <!--Começo container-->
+    <h4><span translate>Relatórios</span>&nbsp;&nbsp;<i class="fa fa-clipboard"></i></h4>
+    <nav>
+      <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+      <u><a style="color: #337ab7;" class="pointer" href="#" routerLink="/Relatorios" translate>Relatórios</a></u><span> / </span>
+      <span translate>Executar</span>
+    </nav>
+    <br>
+    <div class="modal-content-full">
+      <div class="row">
+        <div class="col-12">
+          <div class="card-box">
+            <!-- buscador -->
+            <h4 translate>{{nomeRelatorio}}</h4>
+            <div class="row">
+              <div class="col-sm-3" *ngFor="let para of parametrosRelatorio">
+                <a translate>{{para.nomeParametro}}</a><i *ngIf="para.tipoParametro == 5 && buscandoQuestionario" class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+                <input *ngIf="para.tipoParametro == 1" type="text" class="form-control" [(ngModel)]="para.valor">
+                <input *ngIf="para.tipoParametro == 2" type="number" class="form-control" [(ngModel)]="para.valor">
+                <ejs-datepicker *ngIf="para.tipoParametro == 3" [max]="dataMaxima" strictMode='true' [(value)]='para.valor' [locale]="lang"></ejs-datepicker>
+                <div *ngIf="para.tipoParametro == 4">
+                  <select class="form-control" [(ngModel)]="para.valor">
+                    <option [value]=1 translate>Sim</option>
+                    <option [value]=0 translate>Não</option>
+                  </select>
+                </div>
+                <div *ngIf="para.tipoParametro == 5">
+                  <select class="form-control" [(ngModel)]="para.valor">
+                    <option *ngFor="let questionario of questionarios" [value]=questionario.id>{{questionario.descricao}}</option>
+                  </select>
+                </div>
+              </div>
+              <br>
+            </div>
+            <br>
+            <button class="btn botaoComum mr-2 mb-2" (click)="pesquisar()"><span translate>Pesquisar</span>&nbsp;&nbsp;<i class="fa fa-search"></i></button>
+            <button class="btn botaoCancelar mr-2 mb-2" (click)="Limpar()"><span translate>Limpar Filtros</span>&nbsp;&nbsp;<i class="fa fa-trash"></i></button>
+            <button class="btn botaoCancelar mr-2 mb-2" (click)="voltar()"><span translate>Voltar</span>&nbsp;&nbsp;<i class="fa fa-reply"></i></button>
+            <br>
+            <!-- spinner de busca de relatorios -->
+            <div class="table-loading text-center" *ngIf="buscandoResultado">
+              <i class="fa fa-spinner fa-spin fa-5x fa-fw text-autodocs"></i>
+            </div>
+            <div class="row" *ngIf="!buscandoResultado && relatorioReturn">
+              <div class="col-md-12">
+                <div class="card-box" style="height: 50rem;">
+                  <div class="table-rep-plugin">
+                    <div class="table-responsive" style="height: 48rem;">
+                      <table datatable [dtOptions]="dtOptions" class="table table-striped table-bordered" id="relatorioTable">
+                        <thead>
+                          <tr>
+                            <th *ngFor="let header of relatorioReturn.headers"><a translate>{{header}}</a></th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="!naoEncontrado" class="tamanhoFontGridColeta">
+                          <tr *ngFor="let linha of relatorioReturn.body">
+                            <td *ngFor="let item of linha.valor">
+                              {{item}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

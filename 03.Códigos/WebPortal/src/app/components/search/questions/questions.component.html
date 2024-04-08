@@ -1,0 +1,156 @@
+<div class="content">
+  <div class="container">
+
+    <div class="modal-body">
+      <!-- Questionario -->
+      <a translate>Questionário</a>
+      <select class="form-control" [(ngModel)]="questionarioSelecionado" (change)="setarPerguntas(questionarioSelecionado)"
+        [disabled]="desabilitarQuestionario">
+        <option *ngFor="let questionario of QuestionarioParaSelecionar" [(value)]="questionario.id">
+          <a>{{questionario.descricao}}</a>
+        </option>
+      </select>
+      <br>
+      <!-- Perguntas do questionário -->
+      <a translate>Perguntas</a><i *ngIf="loading" class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+      <select id="select-resposta" class="form-control" [(ngModel)]="resposta" (change)="perguntasSelecionada(resposta)">
+        <option *ngFor="let perguntas of perguntasParaSelecionar" [value]="perguntas.id" [title]="perguntas.descricao">
+          {{perguntas.descricao | slice:0:120}}
+        </option>
+      </select>
+      <br>
+      <!-- Perguntas Alternativas -->
+      <div *ngIf="idTipoPergunta == 1 || idTipoPergunta == 3 || idTipoPergunta == 7 ">
+        <a translate>Resposta</a>
+        <ng-select *ngIf="respostaPergunta" [items]="respostaPergunta.perguntaAlternativas" [multiple]="true" bindLabel="descricao"
+          groupBy="gender" [selectableGroup]="true" [closeOnSelect]="false" bindValue="id" [(ngModel)]="respostaPerguntaAlternativa">
+          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.id">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.id}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.descricao}}
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <div *ngIf="idTipoPergunta == 2 || idTipoPergunta == 11">
+        <a translate>Resposta</a>
+        <input type="text" class="form-control" [(ngModel)]="repostaTipo2" />
+      </div>
+
+      <div *ngIf="idTipoPergunta == 4">
+        <a translate>Resposta</a>
+        <div class="col-sm-12" *ngFor="let resp of respostaPergunta.perguntaAlternativas">
+          <a>{{resp.descricao}}</a>
+          <div class="col-12">
+            <input type="checkbox" (change)="setCheckSim(resp.id)"><span class="mr-2" translate>SIM</span>
+
+            <input type="checkbox" (change)="setCheckNao(resp.id)"><span class="mr-2" translate>NÃO</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="idTipoPergunta == 5">
+        <div class="form-group">
+          <a translate>Operador</a>
+          <select class="form-control" [(ngModel)]="operador">
+            <option [value]=1 translate>Maior Que</option>
+            <option [value]=2 translate>Menor Que</option>
+            <option [value]=3 translate>Igual à</option>
+            <option [value]=4 translate>Entre</option>
+          </select>
+        </div>
+        <div><a *ngIf="operador != null" translate>Resposta</a></div>
+        <div class="row">
+          <div class="col-5 inline align-self-start">
+              <input *ngIf="operador == 4" class="form-control" type='date' [(ngModel)]='dataInicial' [min]='dataMinima' [max]='dataMaxima'>
+          </div>
+          <a class="col-2 inline text-center align-self-center" *ngIf="operador == 4" translate>à</a>
+          <div class="col-5 inline align-self-end">
+              <input *ngIf="operador == 4" class="form-control" type='date' [(ngModel)]='dataFinal' [min]='dataInicial' [max]='dataMaxima'>
+          </div>
+        </div>
+        <input *ngIf="operador != 4 && operador != null" class="form-control" type='date' [(ngModel)]='dataInicial' [min]='dataMinima' max='dataMaxima'>
+      </div>
+
+      <div *ngIf="idTipoPergunta == 6 || idTipoPergunta == 10">
+        <div class="form-group">
+          <a translate>Operador</a>
+          <select class="form-control" [(ngModel)]="operador">
+            <option [value]=1 translate>Maior Que</option>
+            <option [value]=2 translate>Menor Que</option>
+            <option [value]=3 translate>Igual à</option>
+            <option [value]=4 translate>Entre</option>
+          </select>
+        </div>
+        <div><a *ngIf="operador != null" translate>Resposta</a></div>
+        <div class="row">
+          <div class="col-5 inline align-self-start">
+            <input class="col-md-12 form-control" *ngIf="operador == 4" type="number" [(ngModel)]="respostaMenor" />
+          </div>
+          <a class="col-2 inline text-center align-self-center" *ngIf="operador == 4" translate>à</a>
+          <div class="col-5 inline align-self-end">
+            <input class="col-md-12 form-control" *ngIf="operador == 4" type="number" [(ngModel)]="respostaMaior" />
+          </div>
+        </div>
+        <input class="col-md-12 form-control" *ngIf="operador != 4  && operador != null" type="number" [(ngModel)]="respostaMenor" />
+      </div>
+
+      <div *ngIf="idTipoPergunta == 8 || idTipoPergunta == 9 ">
+        <div class="form-group">
+          <a translate>Operador</a>
+          <select class="form-control" [(ngModel)]="operador">
+            <option [value]=5 translate>Contém</option>
+            <option [value]=6 translate>Não contém</option>
+          </select>
+        </div>
+        <a translate>Resposta</a>
+        <ng-select *ngIf="respostaPergunta" [items]="respostaPergunta.perguntaAlternativas" [multiple]="true" bindLabel="descricao"
+          groupBy="gender" [selectableGroup]="true" [closeOnSelect]="false" bindValue="id" [(ngModel)]="respostaPerguntaAlternativa">
+          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.id">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.id}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.descricao}}
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <!-- botão para adicionar nova busca -->
+      <br>
+      <button *ngIf="liberarAdd" type="button" class="btn botaoComum" (click)="salvarBuscaAvancadaPergunta()"><span translate>Adicionar</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+      <br>
+      <br>
+      <div class="from-control" *ngIf="buscaAvancadaPergunta.length">
+        <table class="table table-striped table-reponsive">
+          <thead>
+            <tr>
+              <th data-priority="2" translate>Pergunta</th>
+              <th data-priority="2" translate>Operação</th>
+              <th data-priority="2" translate>Filtro</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let buscaA of buscaAvancadaPerguntaFront">
+              <td>{{buscaA.idPergunta}}-{{buscaA.perguntaAlternativaDescricao | slice:0:22}} ...</td>
+              <td>{{buscaA.tipoOperacao}}</td>
+              <td *ngIf="buscaA.tipoOperacao == 'Entre'">{{buscaA.resposta}}/{{buscaA.respostaMaior}}</td>
+              <td *ngIf="buscaA.tipoOperacao != 'Entre' && (buscaA.idTipoPergunta == 5 || buscaA.idTipoPergunta == 6 || buscaA.idTipoPergunta == 10)">{{buscaA.descricaoResposta}}</td>
+              <td *ngIf="buscaA.tipoOperacao != 'Entre' && (buscaA.idTipoPergunta == 1 ||buscaA.idTipoPergunta == 2 || buscaA.idTipoPergunta == 3 || buscaA.idTipoPergunta == 7 || 
+                                                            buscaA.idTipoPergunta == 8 || buscaA.idTipoPergunta == 9)">{{buscaA.descricaoResposta}}</td>
+              <td *ngIf="buscaA.idTipoPergunta == 4"><a translate>SIM:</a> {{buscaA.descricaoResposta}}/ <a translate>NÃO:</a>
+                {{buscaA.descricaoRespostaNao}}</td>
+              <td><span class="badge badge-danger setaDireita"><a class="pointer" (click)="deletarBuscaPerguntaSalva(buscaA)">X</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn botaoCancelar" data-dismiss="modal" (click)="cancelarBusca()"><span translate>Fechar</span>&nbsp;&nbsp;<i class="fa fa-remove banIcon"></i></button>
+      <button *ngIf="buscaAvancadaPerguntaFront.length" type="button" class="btn botaoSalvar" data-toggle="modal" data-target="#modalSaveSearchQuestion"
+        data-dismiss="modal" (click)="salvar()"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="content">
+    <div class="container">
+        <!--Começo container-->
+        <div class="modal-content-full">
+            <div class="row">
+                <div class="col-12">
+                    <h4><span translate>Faturamento</span>&nbsp;&nbsp;<i class="fa fa-money"></i></h4>
+                    <!-- caminho de telas percorrido -->
+                    <nav>
+                      <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+                      <span translate>Faturamento</span>
+                    </nav>
+                    <br>
+                    <div class="card-box" style="background-color:white; height: 100%;">
+                        <!-- linha com os dropdowns para escolha -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <a translate>Cliente</a>
+                                <br>
+                                <select class="form-control" [(ngModel)]="clienteID">
+                                    <option *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</option>
+                                </select>
+                                <!-- <div *ngIf="submited && !formUsuario.controls.cliente.valid" class="text-danger">
+                                    <span class="text-danger" *ngIf="formUsuario.controls.cliente.errors.required"><small translate>Selecione um cliente</small></span>
+                                </div> -->
+                            </div>
+
+                            <div class="col-sm-3">
+                                <a translate>Período</a>
+                                <select class="form-control" [(ngModel)]="periodoID">
+                                    <option [value]="1">Janeiro</option>
+                                    <option [value]="2">Fevereiro</option>
+                                    <option [value]="3">Março</option>
+                                    <option [value]="4">Abril</option>
+                                    <option [value]="5">Maio</option>
+                                    <option [value]="6">Junho</option>
+                                    <option [value]="7">Julho</option>
+                                    <option [value]="8">Agosto</option>
+                                    <option [value]="9">Setembro</option>
+                                    <option [value]="10">Outubro</option>
+                                    <option [value]="11">Novembro</option>
+                                    <option [value]="12">Dezembro</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <a translate>Projeto</a>
+                                <select class="form-control" (change)="buscarBilling()" [(ngModel)]="projetoID">
+                                    <option *ngFor="let projeto of projects" [value]="projeto.id">{{projeto.descricao}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <a class="mt-2 mb-2" translate>Questionário</a>
+                                <ng-select [items]="questions" [multiple]="true" bindLabel="descricao" groupBy="gender"
+                                  [selectableGroup]="true" [closeOnSelect]="false" bindValue="id" [(ngModel)]="selectedQuestions">
+                                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.id">
+                                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.id}}
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.descricao}}
+                                  </ng-template>
+                                </ng-select>
+                              </div>
+                        </div>
+                        <br><br>
+                        <!-- Area dos charts -->
+                        <div class="row">
+                            <!-- Pie chart -->
+                                <highcharts-chart 
+                                [Highcharts]="Highcharts" 
+                                [options]="chartOptions2" 
+                                [oneToOne]="true" 
+                                style="width: 35%; height: 500px; display: block;">
+                            </highcharts-chart>
+                            <!-- area chart -->
+                                <highcharts-chart 
+                                [Highcharts]="Highcharts" 
+                                [options]="chartOptions" 
+                                [oneToOne]="true" 
+                                style="width: 65%; height: 500px; display: block;">
+                            </highcharts-chart>                              
+                        </div>
+                        <!-- fim area dos charts -->
+                        <br>
+                        <div>
+                            <table class="table table-bordered table-reponsive" style="border-color: Black!important; width:90%; margin-left: 5%">
+                                <thead style="background-color: gray; color: white">
+                                    <tr>
+                                        <th data-priority="1" translate>Período</th>
+                                        <th data-priority="1" translate>Resumo Cobrança</th>
+                                        <th data-priority="1" translate>Valor Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12/05/2019</td>
+                                        <td>Questionarios, Coletas</td>
+                                        <td>R$ 12.500,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

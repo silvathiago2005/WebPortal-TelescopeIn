@@ -1,0 +1,9 @@
+<span *ngIf="audio.src != ''"><strong translate>Audio da Entrevista</strong></span>
+<audio *ngIf="audio.src != ''" style="width: 100%" preload="auto" controls>
+  <source src="{{audio.src}}" type="audio/mpeg">
+  <source src="{{audio.src}}" type="audio/mp4">  
+</audio>
+<div *ngIf="mostrarMensagem">
+  <img src="../../assets/Logo/reloginho.png" height="30px;" width="30px;">&nbsp;&nbsp;
+  <span translate>Áudio não sincronizado, aguardando sincronização do Dispositivo</span>
+</div>

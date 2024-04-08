@@ -1,0 +1,14 @@
+div.highcharts-container {
+    width:90% !important;
+    height:90% !important;
+  }
+
+  .highcharts-root{
+    width:100% !important;
+    height: 100% !important;
+  }
+
+  .tamanho{
+    width: 100%!important;
+    height: 100%!important;
+  }

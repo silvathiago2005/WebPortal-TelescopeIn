@@ -1,0 +1,8 @@
+<div class="col-12">
+    <h5>{{perguntas.numeroDescricao}}</h5>
+        <input *ngIf="!multiLinha" class="form-control" type="text" [(ngModel)]="resposta" placeholder={{senha}} [disabled]="disable" style="background: white">
+        <textarea *ngIf="multiLinha" id="{{perguntas.descricao}}" rows="3" class="form-control" [(ngModel)]="resposta" placeholder={{senha}} [disabled]="disable" style="background: white"></textarea>
+  </div>
+  <div *ngIf="mostrar">
+    <app-multimidia style="left: 5px;" [idColeta]="idColeta" [idPergunta]="perguntas.id" [multimidia]="multimidia"></app-multimidia>
+  </div> 

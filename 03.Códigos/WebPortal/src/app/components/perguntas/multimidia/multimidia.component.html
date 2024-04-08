@@ -1,0 +1,9 @@
+<div style="margin: 10px;">
+    <app-assinatura [multimidia]="multimidiaAssinatura" [idPergunta]="idPergunta"></app-assinatura>
+    <br>
+    <app-imagens [multimidia]="multimidiaFotos" [idPergunta]="idPergunta"></app-imagens>
+    <br>
+    <app-videos [multimidias]="multimidiaVideos" [idPergunta]="idPergunta"></app-videos>
+    <br>
+    <app-audios *ngIf="multimidiaAudios.length > 0" [multimidia]="multimidiaAudios" [idPergunta]="idPergunta"></app-audios>  
+</div>

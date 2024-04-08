@@ -1,0 +1,29 @@
+.panel-heading {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    top: 0;
+  }
+
+  .panel-heading .panel-title {
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .panel-body {
+    overflow: auto;
+    position: absolute;
+    top: 50px;
+    bottom: 10px;
+    left: 10px;
+    right: 20px;
+  }
+
+  .rotate{
+    -webkit-transform:scaleX(-1) rotate(270deg);
+    -moz-transform:scaleX(-1) rotate(270deg);
+    -o-transform:scaleX(-1) rotate(270deg);
+    -ms-transform:scaleX(-1) rotate(270deg);
+    transform:scaleX(-1) rotate(270deg);
+
+  }

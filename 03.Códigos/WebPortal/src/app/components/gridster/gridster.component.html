@@ -1,0 +1,127 @@
+<div class="col-sm-12 row">
+  <div class="col-sm-3">
+    <a translate>Questionário</a><i *ngIf="carregandoQuestionario" class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+    <select class="form-control" [(ngModel)]="idQuestionario" (change)="setQuestionario()">  
+      <option *ngFor="let questionario of questionarios" [value]=questionario.idQuestionario>{{questionario.descricao}}</option>
+    </select>
+  </div>
+
+  <div class="col-sm-3" *ngIf="dashboards.length > 0">
+      <a translate>Dashboards salvos</a>
+      <select class="form-control" [(ngModel)]="idDashboard" (change)="setDashboard()">     
+        <option *ngFor="let dashboard of dashboards" [value]=dashboard.id>{{dashboard.nome}}</option>
+      </select>
+    </div>
+
+  <div class="col-sm-3">
+    <a translate>Data Inicial</a>
+    <ejs-datepicker [(value)]='dataInicial' [max]='dataMaxima' [locale]="lang"></ejs-datepicker>
+  </div>
+  <div class="col-sm-3">
+    <a translate>Data Final</a>
+    <ejs-datepicker [(value)]='dataFinal' [min]='dataInicial' [max]='dataMaxima' [locale]="lang"></ejs-datepicker>
+  </div>
+
+  
+  <div class="col-sm-6 mt-4 mb-2" role="group">
+      <div class="btn-group mr-2 mb-2">
+          <button class="btn botaoSalvar" (click)="setQuestionario()"><span translate>Aplicar</span>&nbsp;&nbsp;<i></i></button>
+      </div>
+    <div class="btn-group mr-2 mb-2">
+        <button *ngIf="!idDashboard && idQuestionario" class="btn botaoSalvar" data-toggle="modal" data-target="#modalSaveDashboard" (click)="zeraDashboard()"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+    </div>
+    <div class="btn-group mr-2 mb-2" role="group">
+        <button *ngIf="idQuestionario && idDashboard" class="btn botaoSalvar" data-toggle="modal" data-target="#modalSaveDashboard"><span translate>Atualizar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+    </div>
+     <div class="btn-group mr-2 mb-2" role="group">
+        <button *ngIf="idQuestionario && idDashboard" class="btn botaoExcluir" data-toggle="modal" data-target="#modalDeleteDashboard"><span translate>Excluir</span>&nbsp;&nbsp;<i class="fa fa-remove"></i></button>
+     </div>     
+    </div>
+  </div>
+
+  <div class="col-sm-12 mb-2 text-center">
+    <br>
+    <h3 *ngIf="nomeDashboard">{{dashboardLayout.nome}}</h3>
+  </div>
+
+<ngx-gridster [options]="gridsterOptions" [draggableOptions]="{ handlerClass: 'panel-heading' }" class="dashboard"
+  #gridster1 (window:resize)="onResize($event)">
+  <ngx-gridster-item class="item-border" *ngFor="let widget of widgets; let i=index" [options]="itemOptions" [(x)]="widget.x"
+    [(y)]="widget.y" [(w)]="widget.w" [(h)]="widget.h" [(xSm)]="widget.xSm" [(ySm)]="widget.ySm" [(wSm)]="widget.wSm"
+    [(hSm)]="widget.hSm" [(xMd)]="widget.xMd" [(yMd)]="widget.yMd" [(wMd)]="widget.wMd" [(hMd)]="widget.hMd" [(xLg)]="widget.xLg"
+    [(yLg)]="widget.yLg" [(wLg)]="widget.wLg" [(hLg)]="widget.hLg" [(xXl)]="widget.xXl" [(yXl)]="widget.yXl" [(wXl)]="widget.wXl"
+    [(hXl)]="widget.hXl" (change)="itemChange(widgets)">
+    
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == produtividadePorUsuario" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="1" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == produtividadePorEquipe" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="2" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == porcentagemRealizado" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="6" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == graficoEvolutivo" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="3" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == graficoAcumulativo" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="4" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == tempoMedioColeta" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="5" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == metaDiariaSemanalMensal" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="7"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == metaTotalColetas" [tipoGrafico]="widget.tipoGrafico" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+    <app-item [widget]="widget" [widgets]="widgets" *ngIf="widget.title == produtividadeRealizado" [tipoGrafico]="widget.tipoGrafico" [idQuestionario]="idQuestionario"
+      [IDTipoGrafico]="8" [dataInicial]="dataInicial" [dataFinal]="dataFinal"></app-item>
+  </ngx-gridster-item>
+</ngx-gridster>
+
+<!-- Modal para colocar o nome do Dashboard  -->
+<div class="modal fade" id="modalSaveDashboard" tabindex="-1" role="dialog" aria-labelledby="modalSaveDashboard"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="text-center">
+          <span *ngIf="!nomeDashboardAnterior" translate>Salvar Dashboard</span>
+          <span *ngIf="nomeDashboardAnterior" translate>Atualizar Dashboard</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span translate>Digite um nome para o Dashboard</span>
+        <input type="text" class="form-control" id="nomeDashboard" name="nomeDashboard" [(ngModel)]="nomeDashboard" maxlength="50">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Fechar</span>&nbsp;&nbsp;<i class="fa fa-remove banIcon"></i></button>
+        <button *ngIf="!nomeDashboardAnterior || nomeDashboardAnterior != nomeDashboard" type="button" class="btn btn-primary" (click)="salvarPosicao()"
+          data-dismiss="modal"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+        <button *ngIf="nomeDashboardAnterior" type="button" class="btn btn-primary" (click)="atualizarSalvarPosicao()" data-dismiss="modal"><span translate>Atualizar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para confirmar o deletar de uma posição -->
+<div class="modal fade" id="modalDeleteDashboard" tabindex="-1" role="dialog" aria-labelledby="modalDeleteDashboard"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="text-center">
+          <span translate>Deletar Posição Dashboard</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span translate>Deseja realmente deletar dashboard salvo?</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Fechar</span>&nbsp;&nbsp;<i class="fa fa-remove banIcon"></i></button>
+        <button type="button" class="btn btn-primary" (click)="deletarPosicao()" data-dismiss="modal"><span translate>Confirmar</span>&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>

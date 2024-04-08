@@ -1,0 +1,87 @@
+<!-- ========== Left Sidebar Start ========== -->
+<nav id="collapseSidebar" class="fixed-left" *ngIf="isLoggedin()">
+  <!-- <div id="wrapper"> -->
+    <div class="left side-menu">
+      <div class="sidebar-inner slimscrollleft">
+        <div id="sidebar-menu">
+          <ul>
+            <li class="text-muted menu-title" translate>Navegação</li>
+            <li class="has_sub">
+              <a href="#collapseGerenciamento" class="waves-effect" data-toggle="collapse">
+                <i class="fa fa-cog"></i>
+                <span translate>Gerenciamento</span>
+                <span class="menu-arrow"></span>
+              </a>
+              <div id="collapseGerenciamento" class="collapse text-center">
+                <div class="menu">
+                  <li>
+                    <a routerLink='/Teams' translate>Equipes</a>
+                  </li>
+                </div>
+                <div class="menu">
+                  <li>
+                    <a routerLink='/Users' translate>Usuários</a>
+                  </li>
+                </div>
+                <div class="menu">
+                  <li>
+                    <a routerLink='/Entidades' translate>Entidades</a>
+                  </li>
+                </div>
+                <div class="menu">
+                  <li>
+                    <a routerLink='/Coletas' translate>Coletas</a>
+                  </li>
+                </div>
+              </div>
+            </li>
+
+            <li class="has_sub">
+              <a href="#collapseAnalise" class="waves-effect" data-toggle="collapse">
+                <i class="fa fa-bar-chart"></i>
+                <span translate>Análise de Dados</span>
+                <span class="menu-arrow"></span>
+              </a>
+              <div id="collapseAnalise" class="collapse text-center">
+                <div class="menu">
+                  <a routerLink='/Exportacao' translate>Exportação de Dados</a>
+                </div>
+              </div>
+            </li>
+
+            <li class="has_sub">
+              <a href="#collapseRelatorio" class="waves-effect" data-toggle="collapse">
+                <i class="fa fa-clipboard"></i>
+                <span translate>Relatórios</span>
+                <span class="menu-arrow"></span>
+              </a>
+              <div id="collapseRelatorio" class="collapse text-center">
+                <div class="menu">
+                  <a routerLink='/Relatorios' translate>Gerar Relatório</a>
+                </div>
+              </div>
+            </li>
+
+            <li class="has_sub">
+              <a href="#collapseGraficos" class="waves-effect" data-toggle="collapse">
+                <i class="fa fa-line-chart"></i>
+                <span translate>Monitoramento</span>
+                <span class="menu-arrow"></span>
+              </a>
+              <div id="collapseGraficos" class="collapse text-center">
+                <div class="menu">
+                  <a routerLink='/' translate>Dashboard Operacional</a>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  <!-- </div> -->
+</nav>
+
+<nav *ngIf="!isLoggedin()"></nav>

@@ -1,0 +1,154 @@
+<!-- Start content -->
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>
+
+<div class="content">
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-12">
+          <h4><span translate>Equipes</span>&nbsp;&nbsp;<i class="fa fa-users"></i></h4>
+          <nav>
+            <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+            <span translate>Equipes</span>
+          </nav>
+          <br>
+        <div class="card-box" style="height: 50rem;">         
+          <button class="btn botaoComum waves-effect mb-1" type="button" data-toggle="modal" data-target="#modalAdd" (click)="verificar(clientes)"><span translate>Adicionar</span>&nbsp;&nbsp;<i class="fa fa-plus"></i></button>
+          <div class="table-rep-plugin">
+            <div class="table-responsive" data-pattern="priority-columns" style="height: 44rem;">
+              <table class="table  table-striped">
+                <thead>
+                  <tr>
+                    <th data-priority="1" translate>NOME</th>
+                    <th data-priority="1" translate>CLIENTE</th>
+                    <th data-priority="1" translate>IDENTIFICAÇÃO</th>
+                    <th data-priority="1" translate>MENU</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let team of teams">
+                    <td>{{team.Nome}}</td>
+                    <td>{{team.Cliente.nome}}</td>
+                    <td>{{team.Id}}</td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-secondary waves-effect" data-toggle="dropdown" aria-expanded="false" aria-dropeffect="popup">
+                          <i class="dripicons-menu"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modalEdit" (click)="setEquipe(team)"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span translate>Editar</span></button>
+
+                          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#modalConfirm" (click)="setEquipe(team)"><i class="fa fa-remove"></i>&nbsp;&nbsp;<span translate>Deletar</span></button>
+
+                          <button class="dropdown-item" type="button" (click)="AdicionarUsuario(team)"><i class="fa fa-user-plus"></i>&nbsp;&nbsp;<span translate>Adicionar Usuário</span></button>
+
+                          <button class="dropdown-item" type="button" (click)="AdicionarProjeto(team)"><i class="fa fa-clipboard"></i>&nbsp;&nbsp;<span translate>Adicionar Projeto</span></button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="!teams" translate>Sem equipes</tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal EditTeam-->
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" translate>Edição de Equipe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label" translate>Nome da Equipe:</label>
+                  <input type="text" class="form-control" name="nomeEquipe" [(ngModel)]="nomeEquipe">
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+                <button type="button" class="btn botaoSalvar" (click)="Modificar(nomeEquipe)" data-dismiss="modal"><span translate>Salvar mudanças</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal AddTeam-->
+        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" translate>Adicionar Equipe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label" translate>Nome da Equipe:</label>
+                  <input type="text" class="form-control" name="nomeEquipe" [(ngModel)]="nomeEquipe">
+                  <span class="text-danger" *ngIf="validNomeEquipe && !nomeEquipe" ><small translate>Informe um nome</small></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label" translate>Cliente:</label>
+                  <div *ngIf="show">
+                    <select [(ngModel)]="selectedCliente" class="form-control">
+                      <option *ngIf="cliente" [value]="cliente.id" selected>{{cliente.nome}}</option>
+                    </select>
+                    <span class="text-danger" *ngIf="validCliente && !selectedCliente" ><small translate>Selecione um cliente</small></span>
+                  </div>
+                  <div *ngIf="!show">
+                    <select [(ngModel)]="selectedCliente" class="form-control">
+                      <option Selected translate>Selecione ...</option>
+                      <option *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</option>
+                    </select>
+                    <span class="text-danger" *ngIf="validCliente && !selectedCliente" ><small translate>Selecione um cliente</small></span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="modal-footer">
+                <button type="button" class="btn botaoCancelar" data-dismiss="modal" (click)="Cancelar()"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+                <button type="button" class="btn botaoSalvar" (click)="Adicionar(nomeEquipe)"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-floppy-o"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- modal confirmar delete -->
+        <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" translate>Deletar Equipe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label" translate>deletar equipe?</label>
+                  <input type="text" class="form-control" name="nomeEquipe" [(ngModel)]="nomeEquipe" disabled>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn botaoCancelar" data-dismiss="modal"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+                <button type="button" class="btn botaoSalvar" (click)="Excluir()" data-dismiss="modal"><span translate>Confirmar</span>&nbsp;&nbsp;<i class="fa fa-check"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- container -->
+</div>
+<!-- content -->

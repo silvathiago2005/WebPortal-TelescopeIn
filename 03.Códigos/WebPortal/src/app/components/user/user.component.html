@@ -1,0 +1,126 @@
+<h4><span translate>Usuário</span>&nbsp;&nbsp;<i class="fa fa-user"></i></h4>
+<div class="row">
+    <div class="col-sm-7">
+        <nav>
+            <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+            <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/Users" translate>Usuários</a></u><span> / </span>
+            <span translate>Cadastro de Usuário</span>
+          </nav>
+          <br>
+        <div class="card-box">
+            <form novalidate role="formUsuario" [formGroup]="formUsuario">
+                <h4 class="header-title m-t-0" translate>Cadastro de Usuário</h4>
+                <br>
+                <div class="col-12 mb-2 mr-2">
+                    <label for="userName" translate>Nome Completo<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" formControlName="nomeCompleto">
+                    <div *ngIf="submited && !formUsuario.controls.nomeCompleto.valid" class="text-danger">
+                        <span *ngIf="formUsuario.controls.nomeCompleto.errors.required"><small translate>Informe um
+                                nome</small></span>
+                    </div>
+
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="emailAddress" translate>Email<span class="text-danger">*</span></label>
+                    <input class="form-control" type="email" formControlName="emailAddress">
+                    <span class="text-danger" *ngIf="validEmailExistente"><small translate>Informe um outro Email</small></span>
+                    <div *ngIf="submited && !formUsuario.controls.emailAddress.valid" class="text-danger">
+                        <span *ngIf="formUsuario.controls.emailAddress.errors.required"><small translate>Informe um
+                                Email</small></span>
+                        <span *ngIf="formUsuario.controls.emailAddress.value && formUsuario.controls.emailAddress.errors.email"
+                            translate><small translate>Endereço de Email inválido</small></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="userName" translate>Login<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Login" formControlName="usuario">
+                    <span class="text-danger" *ngIf="validUsuarioExistente"><small translate>Informe um outro
+                        Usuário</small></span>
+                    <div *ngIf="submited && !formUsuario.controls.usuario.valid" class="text-danger">                       
+                        <span class="text-danger" *ngIf="formUsuario.controls.usuario.errors.required"><small translate>Informe
+                                um Usuário</small></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="pass1" translate>Senha<span class="text-danger">*</span></label>
+                    <input id="pass1" type="password" class="form-control" formControlName="password" (input)="validaSenha()" [(ngModel)]="usuarioSenha">
+                    <div *ngIf="submited && !formUsuario.controls.password.valid" class="text-danger">
+                        <span class="text-danger" *ngIf="formUsuario.controls.password.errors.required"><small
+                                translate>Informe uma senha</small></span>
+                    </div>
+                    <div>
+                        <span *ngIf="usuarioSenha && !forte" class="text-danger"><small translate>Senha Fraca</small></span>
+                        <span *ngIf="usuarioSenha && forte" class="text-success"><small translate>Senha Forte</small></span>
+                    </div>   
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="passWord2" translate>Confirmar Senha<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" formControlName="password2" (input)="validarSenhasIguais()" [(ngModel)]="usuarioSenha2">
+                    <div *ngIf="usuarioSenha2 && senhaErrada" class="text-danger">
+                        <span class="text-danger"><small translate>SenhaErrada</small></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="cargo" translate>Cargo</label>
+                    <input type="text" class="form-control" formControlName="cargo" maxlength="70">
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="text" translate>Cliente<span class="text-danger">*</span></label>
+                    <br>
+                    <select class="form-control" formControlName="cliente">
+                        <option class="form-group" *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</option>
+                    </select>
+                    <div *ngIf="submited && !formUsuario.controls.cliente.valid" class="text-danger">
+                        <span class="text-danger" *ngIf="formUsuario.controls.cliente.errors.required"><small translate>Selecione um cliente</small></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="text" translate>Grupo de Acesso<span class="text-danger">*</span></label>
+                    <br>
+                    <select class="form-control" formControlName="grupo">
+                        <option class="form-group" *ngFor="let grupo of accessGroup" [value]="grupo.id">{{grupo.nome}}</option>
+                    </select>
+                    <div *ngIf="submited && !formUsuario.controls.grupo.valid" class="text-danger">
+                        <span class="text-danger" *ngIf="formUsuario.controls.grupo.errors.required"><small translate>Selecione
+                                um grupo de acesso</small></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-2 mr-2">
+                    <label for="text" translate>Equipes<span class="text-danger">*</span></label>
+                    <br>
+                    <ng-select class="align-self-start" [items]="team" [multiple]="true" bindLabel="Nome"
+                        groupBy="gender" [selectableGroup]="true" [closeOnSelect]="false" bindValue="Id" formControlName="equipe">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="item.Id">
+                            <input id="item-{{index}}" type="checkbox" /> {{item.id}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" /> {{item.Nome}}
+                        </ng-template>
+                    </ng-select>
+                    <div *ngIf="submited && !formUsuario.controls.equipe.valid" class="text-danger">
+                            <span class="text-danger" *ngIf="formUsuario.controls.equipe.errors.required"><small translate>Selecione uma equipe</small></span>
+                    </div>
+                </div>
+                <br>
+
+                <br>
+                <div class="text-right m-b-0">
+                    <button class="btn botaoCancelar waves-effect waves-light mb-2 mr-2" (click)="cancelar()"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+                    <button class="btn botaoSalvar waves-effect waves-light mb-2 mr-2" (click)="Salvar()"><span translate>Salvar</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner>

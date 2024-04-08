@@ -1,0 +1,9 @@
+<div *ngIf="assinatura">
+  <!-- <span *ngIf="sincronizada" translate>Assinatura:</span> -->
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img *ngIf="sincronizada" src="{{assinatura}}" style="max-height: 200px;">
+  <img *ngIf="!sincronizada" src="{{assinatura}}" style="max-height: 100px;">
+  <div>
+    <span *ngIf="observacao" translate>{{observacao}}</span>
+  </div>
+</div>

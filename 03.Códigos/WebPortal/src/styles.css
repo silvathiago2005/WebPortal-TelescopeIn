@@ -1,0 +1,384 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* import necessário para funcionamento dos multi checkbox */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "../node_modules/@syncfusion/ej2-ng-calendars/styles/material.css";
+
+@import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-angular-schedule/styles/material.css';
+
+/* caso os imports de cima deem erro */
+/* @import '../../node_modules/@syncfusion/ej2/material.css'; */
+
+
+.screenContent{
+    margin: 10px 10px auto auto;
+}
+
+.tamanhoFontGridColeta{
+    font-size: 0.76rem;
+    line-height: 1.35;
+    font-weight: 380;
+}
+
+.tamanhoFonteRespostasColetas{
+    font-size: 1rem;
+}
+
+.img-marcadagua{
+    width:75%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    top:50%;
+    left: 50%;
+    resize: both;
+    overflow: auto;
+    opacity: 0.075;
+}
+
+#select-resposta option {
+    width: 100px!important;
+    padding-right: 0px!important;
+    text-overflow: ellipsis;
+}
+
+.logoLogin{
+    min-width: 298px;
+    max-width: 378px;
+}
+
+app-login{
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    left: 0;
+    width: 100vw;
+    overflow-y: auto;
+}
+
+.loginPosition{
+    width: 400px;
+    margin: 100px auto 70px auto;
+}
+
+@media screen and (max-width: 520px) {
+    .loginPosition{
+        width: 80%;
+    }
+  }
+
+ul{
+    list-style-type: none;
+}
+
+ul li { display: inline; padding: 2px 10px;}
+
+.pointer{
+    cursor: pointer;
+}
+
+a{
+    color: gray
+}
+
+a:link{
+    color: Black;
+    position: relative;
+}
+
+.tamanho {
+    height: 300px;
+    width: auto;
+}  
+
+@media (max-height: 704px){
+    .tamanho2{
+        height: 750px;
+        width: auto;
+    } 
+}
+
+@media (min-height: 550px){
+    .tamanho2{
+        height: 550px;
+        width: auto;
+    } 
+}
+
+.pac-container {
+    z-index: 100000;
+}
+
+.bordaRedonda{
+    width:400px;
+    -moz-border-radius:14px;
+    -webkit-border-radius:14px;
+    border-radius:14px;
+}
+
+.setaDireita{
+    float: right;
+    margin-right: 5px;
+}
+
+.limitText{
+    width: 100px;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100px;
+}
+.borderless{
+    padding: 0px 0px;
+    border: none;
+}
+
+.inline{
+    display: inline-block;
+}
+
+.inlineSeparado{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.botaoModal{
+    float: left;
+    text-align: left;
+    position: relative;
+}
+
+.modal{
+    padding: 0!important;
+}
+
+.modal-full {
+    margin-top: -20px!important;
+    margin: 0 auto auto;
+}
+
+.modal15por {
+    margin-top: 20px!important;
+    min-width: 60%;
+}
+
+.modal-content-full {
+    margin: auto;
+    margin-left:-26px;
+    min-height: 550px;
+    max-height: inherit;
+    background-color: whitesmoke;
+    z-index: 5;
+}
+
+.left.side-menu{
+    width: 220px!important;
+    z-index: 5;
+    float:left!important;
+} 
+
+.centerSpinner{
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    text-align:center;
+    
+    /* pura mágica */
+    position: absolute;
+    top: 50%; /* posiciona na metade da tela */
+    margin-top: -25px; /* e retrocede metade da altura */
+    left: 50%; /* posiciona na metade da tela */
+    margin-left: -100px; /* e retrocede metade da largura */
+}
+
+.caracter{
+    height: 10% !important; 
+    max-height: 5ch !important;
+}
+
+.menu{
+    margin-bottom: 15px;
+}
+
+.button-menu-mobile{
+    min-height: 50px;
+    max-height: 60px!important;
+    max-width: 70px;
+    font-size: 16px;
+    display: inline;
+}
+
+.content-wrapper { width: 35%; margin: 0 auto; min-width: 185px; }
+
+.control-label { padding: 24px 0px 10px 0px; font-size: 12px; }
+
+.wrapper{
+    display: flex;
+    align-items: stretch;
+}
+
+#collapseSidebar.active{
+    margin-left: -240px!important;
+}
+
+#sidebar-menu > ul > li > a.active {
+    background: #f4f8fb !important;
+    border-left: none!important;
+    color: black !important;
+}
+
+#sidebar-menu > ul > li > a:hover {
+    color: black!important;
+    text-decoration: none;}
+
+    .ng-dropdown-panel .ng-dropdown-panel-items {
+        max-height: 120px!important;
+    }  
+
+.form-control.time{
+    max-width: 50%!important;
+}
+
+.dropdown-menu-relatorio{
+    left: 0;
+    right: 0;
+}
+
+button.dt-button, div.dt-button, a.dt-button{
+    color: white!important;
+    background-image: none!important;
+    background-color: #81c868!important ;
+}
+
+@media (min-width: 991px){
+    /* esconder o botão de hidden menu lateral */
+    .buttonCallapseSidebar{
+        display: none;
+    }
+}    
+
+@media (max-width: 991px) and (min-width: 768px){
+    .menu {
+        margin-bottom: 15px;
+        white-space: normal;
+    }
+
+    #collapseSidebar.fixed-left{
+        height: 100vh;
+        width: 85px;
+        z-index: 5;
+        float:left;
+    } 
+
+    .enlarged .left.side-menu{
+        margin-left: 0px!important;
+        width: 85px!important;
+        z-index:5;
+        float:left;
+    }
+}
+@media (max-width: 420px){
+    .logoLogin{
+        min-width: 200px;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 767px){  
+    #collapseSidebar.fixed-left{
+        height: 100vh;
+        width: 85px;
+        z-index: 5;
+        float:left;
+    } 
+
+    .enlarged .left.side-menu{
+        margin-left: 0px!important;
+        width: 85px!important;
+        z-index:5;
+        float:left;
+    }
+
+    .menu {
+        margin-bottom: 15px;
+        white-space: normal;
+        z-index: 8;
+    }
+
+    #wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover a span {
+        display: none;
+    }
+
+    footer{
+        display: none;
+    }
+}
+
+.gridster-item-inner {
+    position: relative;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    margin: 10px;
+    
+}
+
+.item-border .gridster-item-inner{
+    border-style:solid; 
+    border-color: #ecaa00; 
+    border-radius: 5px; 
+    border-width: 1px; 
+    background: white;
+}
+
+/* faz com que as fotos fiquem num tamanho maior ao clicar encima dentro do modal de visualizar o questionario respondido */
+ngx-gallery ngx-gallery-preview.ngx-gallery-active{
+    height: 500px!important;
+    position: fixed!important;
+    top: initial!important;
+    margin-top: -50%!important;
+    display: flex!important;
+    margin-bottom: 50%!important;
+}
+
+ngx-gallery{
+    width: 100%!important;
+}
+
+.botaoSalvar{
+    background-color: seagreen;
+    color: white;
+}
+
+.botaoCancelar{
+    background-color: white;
+    border-color: lightslategray;
+}
+
+.banIcon{
+    color: #dc3555;
+}
+
+.botaoExcluir{
+    background-color: #dc3555;
+    color: white;
+}
+
+.botaoComum{
+    background-color: #5d9cec;
+    color: white;
+}
+/* usado na tela de entidades */
+span.e-input-group.e-control-wrapper.e-date-wrapper::after{
+    z-index: 1000;
+}
+/* .dateCorrigido{
+    z-index: 1000;
+} */

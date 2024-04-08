@@ -1,0 +1,16 @@
+<div class="col-12">
+  <h5>{{perguntas.numeroDescricao}}</h5>
+  <div id="wrapper">
+  <input *ngIf="resposta" class="form-control" type="text" [(ngModel)]="resposta" [disabled]="disable" style="background: white">
+  <select *ngIf="!resposta" class="form-control" [(ngModel)]="selecao" (change)="radiusChange()" [disabled]="disable" style="background: white">
+    <option *ngFor="let respostas of dadosSelecao" [value]="respostas" [disabled]="disable">
+      <a *ngIf="type == 'Externa'">{{respostas.descricao}}</a>
+      <a *ngIf="type == 'Interna'">{{respostas.descricao}}</a>
+    </option>
+  </select>
+  <input *ngIf="outros" class="form-control col-12" type="text" [(ngModel)]="respostaOutros" [disabled]="true" style="background: white"> 
+</div>
+<div *ngIf="mostrar">
+  <app-multimidia [multimidia]="multimidia" [idColeta]="idColeta"></app-multimidia>
+</div> 
+</div>

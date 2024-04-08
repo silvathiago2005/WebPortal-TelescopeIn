@@ -1,0 +1,45 @@
+<h4><span translate>Gerenciamento de Senha</span>&nbsp;&nbsp;<i class="fa fa-key"></i></h4>
+<div class="row">
+  <div class="col-6">
+    <nav>
+      <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+      <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/Users" translate>Gerenciamento de Senha</a></u><span> / </span>
+      <span translate>Alterar Senha</span>
+    </nav>
+    <br>
+    <div class="card-box col-6">
+      <div class="col-12"><!--begin inputs area-->
+          <div class="col-12 mb-2 mr-2">
+              <label translate>Senha Antiga<span class="text-danger">*</span></label>
+              <input id="pass1" type="password" class="form-control" [(ngModel)]="usuarioSenha">
+          </div>
+
+          <div class="col-12 mb-2 mr-2">
+              <label translate>Nova Senha<span class="text-danger">*</span></label>
+              <input type="password" class="form-control" (input)="validaSenha()" [(ngModel)]="usuarioSenha1">
+              <div *ngIf="usuarioSenha1 && senhaErrada" class="text-danger">
+                  <span class="text-danger" *ngIf="null"><small translate>Informe uma senha</small></span>
+              </div>
+              <div>
+                  <span *ngIf="usuarioSenha1 && !forte" class="text-danger"><small translate>Senha Fraca</small></span>
+                  <span *ngIf="usuarioSenha1 && forte" class="text-success"><small translate>Senha Forte</small></span>
+              </div>  
+          </div>
+
+          <div class="col-12 mb-2 mr-2">
+              <label for="passWord2" translate>Confirmar Nova Senha<span class="text-danger">*</span></label>
+              <input type="password" class="form-control" (input)="validarSenhasIguais()" [(ngModel)]="usuarioSenha2">
+              <div *ngIf="usuarioSenha2 && senhaErrada" class="text-danger">
+                  <span class="text-danger"><small translate>SenhaErrada</small></span>
+              </div> 
+          </div>
+        </div> <!--final inputs area-->
+
+      <br>
+      <div class="text-right col-12 m-b-0">
+        <button class="btn botaoCancelar waves-effect waves-light mb-2 mr-2" (click)="cancelar()"><span translate>Cancelar</span>&nbsp;&nbsp;<i class="fa fa-ban banIcon"></i></button>
+        <button class="btn botaoSalvar waves-effect waves-light mb-2 mr-2" (click)="Trocar()"><span translate>Trocar Senha</span>&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

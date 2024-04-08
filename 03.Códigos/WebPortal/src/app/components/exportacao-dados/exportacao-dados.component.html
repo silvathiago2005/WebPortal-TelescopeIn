@@ -1,0 +1,91 @@
+<div class="content">
+  <div class="container">
+      <h4><span translate>Exportação de Dados</span>&nbsp;&nbsp;<i class="fa fa-download"></i></h4>
+      <nav>
+        <u><a style="color: #337ab7" class="pointer" href="#" routerLink="/" translate>Home</a></u><span> / </span>
+        <span translate>Exportação de Dados</span>
+      </nav>
+      <br>
+    <!--Começo container-->
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card-box">
+            <!-- buscador -->
+            <div class="row form-group">
+              <div class="col-sm-3">
+                  <a translate>Data Inicial</a>
+                  <ejs-datepicker strictMode='true' [(value)]='dataInicial' [locale]="lang"></ejs-datepicker>             
+                </div>         
+                <div class="col-sm-3">
+                    <a translate>Data Final</a>
+                  <ejs-datepicker strictMode='true' [(value)]='dataFinal' [min]='dataInicial' [max]='dataMaxima' [locale]="lang"></ejs-datepicker>
+                </div>
+
+              <div class="col-sm-3">
+                  <a translate>Questionário<span class="text-danger md-2">*</span></a>
+                      <i *ngIf="mostrarSpinner" class="fa fa-spinner fa-spin fa-1x fa-fw text-autodocs"></i>
+                  <br>
+                  <div class="row">
+                  <select [(ngModel)]="selectedQuestionario" class="form-control col-sm-11">
+                      <option class="form-group" *ngFor="let questionario of questionarios" [value]="questionario.idQuestionario">{{questionario.descricao}}</option>
+                  </select>
+                </div>
+                <span class="text-danger" *ngIf="informarUsuario && !selectedQuestionario" ><small translate>Selecione um questionario</small></span>
+              </div>
+              
+            </div>
+            <br>
+            <!-- linha com os botões -->
+            <div class="row">
+              <div class="col-12 align-middle" style="text-align: right;">
+                <div class="btn-group mr-2 mb-2" role="group">
+                  <button type="button" class="btn btn-primary" style="margin-right: 20px;" (click)="buscar()"><span translate>Buscar</span>&nbsp;&nbsp;<i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+              <br>
+              <!--Fim Buscador-->
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="card-box" style="height: 50rem;">
+                    <div class="table-rep-plugin">
+                      <div class="table-responsive" data-pattern="priority-columns" style="height: 48rem;">
+                          <div class="table-loading text-center" *ngIf="grid.loading && !grid.error">
+                              <i class="fa fa-spinner fa-spin fa-5x fa-fw text-autodocs"></i>
+                            </div>
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th data-priority="3" translate>ID de exportação</th>
+                              <th data-priority="3" translate>Cliente</th>
+                              <th data-priority="3" translate>Questionário</th>
+                              <th data-priority="3" translate>Data Geração</th>
+                              <th data-priority="3" translate>Arquivo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of grid.itens">
+                              <td>{{item.idControleExportacao}}</td>
+                              <td>{{item.nomeCliente}}</td>
+                              <td>{{item.descricaoQuestionario}}</td>
+                              <td>{{item.dtGeracao | date: dateFormat | slice:0:10}} {{item.dtGeracao | slice:11:16}}</td>
+                              <td><button class="btn btn-primary" (click)="download(item)" translate>Baixar</button></td>
+                            </tr>
+                            <tr *ngIf="pesquisado && !grid.loading && grid.itens.length == 0">
+                              <td class="text-center" colspan="5" translate>Não foi encontrado registros</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--Fim container-->
+    </div>
